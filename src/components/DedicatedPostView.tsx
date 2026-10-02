@@ -229,6 +229,22 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
                   </blockquote>
                 );
               }
+              if (block.type === 'image') {
+                return (
+                  <div key={idx} className="washi-tape-img my-8 max-w-sm mx-auto relative group">
+                    <img
+                      src={block.content as string}
+                      alt={block.caption || 'Post image'}
+                      className="w-full h-auto object-cover img-border shadow-[3px_3px_0_var(--ink)]"
+                    />
+                    {block.caption && (
+                      <p className="mono-font text-xs text-center mt-3 text-neutral-500 italic">
+                        {block.caption}
+                      </p>
+                    )}
+                  </div>
+                );
+              }
               return null;
             })}
 
