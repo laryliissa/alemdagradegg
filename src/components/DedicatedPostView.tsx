@@ -14,6 +14,9 @@ import {
 } from 'lucide-react';
 import { PostItem } from '../data/postsData.ts';
 import { FestivalPhotoCard } from './FestivalPhotoCard.tsx';
+import { StickerButton } from './ui/StickerButton.tsx';
+import { PullQuote } from './ui/PullQuote.tsx';
+import { WashiTapeImage } from './ui/WashiTapeImage.tsx';
 
 interface DedicatedPostViewProps {
   post: PostItem;
@@ -149,16 +152,20 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
           </header>
 
           {/* Imagem de Destaque com Fita Adesiva (Washi Tape) */}
-          <div className="washi-tape-img">
+          <div className="washi-tape-img max-w-xl mx-auto flex flex-col items-center">
             <FestivalPhotoCard
               src={post.coverImage}
               alt={post.title}
               isDetailedView={true}
               className="w-full img-border shadow-[4px_4px_0_var(--ink)]"
             />
-            {post.customCaption && (
+            {post.customCaption ? (
               <p className="mono-font text-xs text-center text-neutral-500 mt-2.5 italic">
                 {post.customCaption}
+              </p>
+            ) : (
+              <p className="hand-font text-xl text-center text-[var(--ink)] mt-3 font-bold">
+                Gramado do Rock in Rio 2026 ✦ Registro de Campo
               </p>
             )}
           </div>
@@ -181,23 +188,24 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
                 );
               }
               if (block.type === 'pull-quote') {
-                const bgClass =
+                const scheme =
                   block.colorScheme === 'lilac'
-                    ? 'bg-[var(--k-lilac)] text-white'
+                    ? 'lilac'
                     : block.colorScheme === 'pink'
-                    ? 'bg-[var(--k-pink)] text-white'
+                    ? 'pink'
                     : block.colorScheme === 'acid'
-                    ? 'bg-[var(--k-acid)] text-[var(--ink)]'
+                    ? 'acid'
                     : block.colorScheme === 'cyan'
-                    ? 'bg-[var(--k-cyan)] text-[var(--ink)]'
-                    : 'bg-[var(--bg-dots)] text-[var(--ink)]';
+                    ? 'cyan'
+                    : 'dots';
 
                 return (
-                  <div key={idx} className={`pull-quote ${bgClass}`}>
-                    <p className={block.colorScheme === 'lilac' || block.colorScheme === 'pink' ? 'text-white' : 'text-[var(--ink)]'}>
-                      {block.content as string}
-                    </p>
-                  </div>
+                  <PullQuote
+                    key={idx}
+                    quote={block.content as string}
+                    colorScheme={scheme}
+                    rotation="slight-left"
+                  />
                 );
               }
               if (block.type === 'hand-note') {

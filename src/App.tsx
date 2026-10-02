@@ -39,6 +39,10 @@ import { AmbientSoundPlayer } from './components/AmbientSoundPlayer.tsx';
 import { AuthorAuthModal } from './components/AuthorAuthModal.tsx';
 import { Logo } from './components/Logo.tsx';
 import { FestivalPhotoCard } from './components/FestivalPhotoCard.tsx';
+import { PostCard } from './components/ui/PostCard.tsx';
+import { StickerButton } from './components/ui/StickerButton.tsx';
+import { DiaryNote } from './components/ui/DiaryNote.tsx';
+import { LentesDeApoioSection } from './components/LentesDeApoioSection.tsx';
 
 export default function App() {
   const {
@@ -67,6 +71,7 @@ export default function App() {
   const [postToEdit, setPostToEdit] = useState<PostItem | null>(null);
   const [isToploaderOpen, setIsToploaderOpen] = useState(false);
   const [isManifestoOpen, setIsManifestoOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'cards' | 'list'>('cards');
 
   // Estados de Feedback
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -545,10 +550,7 @@ export default function App() {
                     </h3>
                   </div>
                   <p className="text-sm font-medium text-neutral-800 leading-relaxed">
-                    Minha pesquisa é sobre como ficar além da grade — sendo fã de um jeito que recusa o
-                    sacrifício físico — gera aprendizagem, mesmo quando o fandom não é o lugar de
-                    acolhimento que promete ser. E é esse aprendizado que traz pertencimento e melhora a
-                    vida.
+                    Ficar além da grade é escolher ser fã sem abrir mão da própria integridade e do respeito ao próprio corpo e mente. Minha pesquisa investiga como a recusa da devoção sacrificial exacerbada e a criação de limites saudáveis geram uma aprendizagem viva, aquela que nasce justamente quando a comunidade se mostra imperfeita ou desafiadora. É esse aprendizado prático de impor filtros e proteger nossa sensibilidade que reconstrói nosso pertencimento real e devolve a qualidade de vida à caminhada adulta.
                   </p>
                 </div>
                 <div className="shrink-0">
@@ -571,28 +573,61 @@ export default function App() {
                     <Sparkles className="w-5 h-5 text-[var(--k-lilac)]" />
                   </div>
 
-                  {/* Barra de Filtro de Territórios Rápida */}
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
-                    {(['Todos', 'Espaços & Corpos', 'Mesa de Criação', 'Filtros & Limites', 'Aprendizagens'] as const).map(
-                      (ter) => {
-                        const active = selectedTerritory === ter;
-                        return (
-                          <button
-                            key={ter}
-                            onClick={() => setSelectedTerritory(ter)}
-                            className={`mono-font text-[10px] uppercase font-bold px-3 py-1.5 rounded-full border-2 whitespace-nowrap transition-all ${
-                              active
-                                ? 'bg-[var(--ink)] text-white border-[var(--ink)] shadow-[2px_2px_0_var(--k-acid)]'
-                                : 'bg-white text-neutral-700 border-neutral-300 hover:border-[var(--ink)]'
-                            }`}
-                          >
-                            {ter} {ter !== 'Todos' && `(${territoryCounts[ter] || 0})`}
-                          </button>
-                        );
-                      }
-                    )}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {/* Alternador de Visualização Cards / Lista */}
+                    <div className="flex items-center gap-1 bg-white border-2 border-[var(--ink)] p-0.5 rounded-xl shadow-[2px_2px_0_var(--ink)]">
+                      <button
+                        onClick={() => setViewMode('cards')}
+                        className={`mono-font text-[10px] font-bold uppercase px-2.5 py-1 rounded-lg transition-colors ${
+                          viewMode === 'cards'
+                            ? 'bg-[var(--k-acid)] text-[var(--ink)]'
+                            : 'text-neutral-600 hover:bg-neutral-100'
+                        }`}
+                        title="Visualização em Cartões Scrapbook com Washi Tape"
+                      >
+                        ✦ Cards
+                      </button>
+                      <button
+                        onClick={() => setViewMode('list')}
+                        className={`mono-font text-[10px] font-bold uppercase px-2.5 py-1 rounded-lg transition-colors ${
+                          viewMode === 'list'
+                            ? 'bg-[var(--k-acid)] text-[var(--ink)]'
+                            : 'text-neutral-600 hover:bg-neutral-100'
+                        }`}
+                        title="Visualização em Lista Compacta"
+                      >
+                        ≡ Lista
+                      </button>
+                    </div>
+
+                    {/* Barra de Filtro de Territórios Rápida */}
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+                      {(['Todos', 'Espaços & Corpos', 'Mesa de Criação', 'Filtros & Limites', 'Aprendizagens'] as const).map(
+                        (ter) => {
+                          const active = selectedTerritory === ter;
+                          return (
+                            <button
+                              key={ter}
+                              onClick={() => setSelectedTerritory(ter)}
+                              className={`mono-font text-[10px] uppercase font-bold px-3 py-1.5 rounded-full border-2 whitespace-nowrap transition-all ${
+                                active
+                                  ? 'bg-[var(--ink)] text-white border-[var(--ink)] shadow-[2px_2px_0_var(--k-acid)]'
+                                  : 'bg-white text-neutral-700 border-neutral-300 hover:border-[var(--ink)]'
+                              }`}
+                            >
+                              {ter} {ter !== 'Todos' && `(${territoryCounts[ter] || 0})`}
+                            </button>
+                          );
+                        }
+                      )}
+                    </div>
                   </div>
                 </div>
+
+                {/* Espaço dedicado das Lentes de Apoio dentro do Território Aprendizagens */}
+                {selectedTerritory === 'Aprendizagens' && (
+                  <LentesDeApoioSection />
+                )}
 
                 {/* Se não houver posts filtrados */}
                 {filteredPosts.length === 0 ? (
@@ -609,6 +644,23 @@ export default function App() {
                     >
                       Limpar Filtros
                     </button>
+                  </div>
+                ) : viewMode === 'cards' ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {filteredPosts.map((post) => (
+                      <PostCard
+                        key={post.id}
+                        post={post}
+                        onOpen={openPost}
+                        onEdit={(p, e) => handleEditClick(p, e)}
+                        onDelete={(id, e) => handleDeleteClick(id, post.title, e)}
+                        onToggleDraft={(id, e) => {
+                          e.stopPropagation();
+                          toggleDraft(id);
+                        }}
+                        isAuthorMode={isAuthenticated}
+                      />
+                    ))}
                   </div>
                 ) : (
                   <div className="flex flex-col gap-6">
@@ -842,7 +894,11 @@ export default function App() {
                   </li>
                   <li>
                     <button
-                      onClick={() => setSelectedTerritory('Aprendizagens')}
+                      onClick={() => {
+                        setSelectedTerritory('Aprendizagens');
+                        const el = document.getElementById('feed-section');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }}
                       className={`w-full flex justify-between items-center group transition-colors ${
                         selectedTerritory === 'Aprendizagens' ? 'text-[var(--k-pink)] font-bold' : 'hover:text-[var(--k-pink)]'
                       }`}
@@ -855,6 +911,19 @@ export default function App() {
                         {territoryCounts['Aprendizagens']}
                       </span>
                     </button>
+                    <div className="mt-1 pl-6">
+                      <span
+                        onClick={() => {
+                          setSelectedTerritory('Aprendizagens');
+                          const el = document.getElementById('feed-section');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="inline-flex items-center gap-1 mono-font text-[9px] font-bold uppercase text-[var(--ink)] bg-[var(--k-cyan)] hover:bg-[var(--k-pink)] hover:text-white transition-colors px-2 py-0.5 rounded-full border border-[var(--ink)] shadow-[1px_1px_0_var(--ink)] cursor-pointer"
+                      >
+                        <Sparkles className="w-2.5 h-2.5" />
+                        Lentes de Apoio ✦
+                      </span>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -879,6 +948,17 @@ export default function App() {
                   Abrir Estúdio de Decoração ✦
                 </button>
               </div>
+
+              {/* Widget: Nota de Campo do Caderno (Scrapbook DiaryNote) */}
+              <DiaryNote
+                category="Pergunta-Mãe"
+                title="Caderno de Campo"
+                note="“O que acontece quando aquilo que amamos nos coloca em movimento?”"
+                handwrittenHighlight="começar sempre pelo afeto"
+                date="Investigação Viva"
+                paperColor="yellow"
+                rotation="left"
+              />
 
               {/* Widget: Newsletter */}
               <div className="sticker-card p-6 bg-[var(--k-lilac)] text-[var(--ink)]">
