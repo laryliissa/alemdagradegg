@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+:root {
+  /* Identidade Visual Base */
+  --ink: #161124;
+  --paper: #faf8ff;
+  --bg-dots: #e6dcf5;
+
+  /* Cores: Lilás (Main), Rosa (Highlight), Acid (Emphasis), Cyan (Punctual) */
+  --k-lilac: #b388ff;
+  --k-pink: #eb3f8f;
+  --k-acid: #d4ff00;
+  --k-cyan: #00e5ff;
+
+  --shadow-solid: 4px 4px 0px var(--ink);
+  --shadow-hover: 6px 6px 0px var(--ink);
+  --shadow-deep: 8px 8px 0px var(--ink);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--bg-dots) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  min-height: 100vh;
+}
+
+/* Tipografia */
+.display-font {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.mono-font {
+  font-family: "Space Mono", monospace;
+  letter-spacing: -0.02em;
+}
+
+.hand-font {
+  font-family: "Caveat", cursive;
+}
+
+/* Cards Estilo Sticker */
+.sticker-card {
+  background-color: #ffffff;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--shadow-solid);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticker-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Pílulas e Tags */
+.pill {
+  border: 2px solid var(--ink);
+  border-radius: 99px;
+  padding: 2px 10px;
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0px var(--ink);
+}
+
+/* Links de Navegação */
+.nav-link {
+  position: relative;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--k-pink);
+}
+
+.nav-link.active {
+  color: var(--k-lilac);
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--k-lilac);
+  border-radius: 2px;
+}
+
+/* Utilitários de Imagem */
+.img-border {
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+}
+
+/* Scrollbar Personalizada */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--paper);
+  border-left: 2px solid var(--ink);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--k-lilac);
+  border: 2px solid var(--ink);
+}
+
+/* Estilo do Post Dedicado */
+.post-container {
+  background-color: #ffffff;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--shadow-deep);
+  position: relative;
+}
+
+.post-content p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #334155;
+  margin-bottom: 1.5rem;
+}
+
+.post-content h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px dashed var(--ink);
+}
+
+.post-content ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.post-content li {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #334155;
+  margin-bottom: 0.5rem;
+  position: relative;
+  list-style-type: none;
+}
+
+.post-content li::before {
+  content: "✦";
+  position: absolute;
+  left: -1.5rem;
+  color: var(--k-lilac);
+  font-size: 0.95rem;
+}
+
+/* Citações de destaque no texto (Pull Quotes) */
+.pull-quote {
+  border: 2px solid var(--ink);
+  background-color: var(--bg-dots);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 2.5rem 0;
+  transform: rotate(-1deg);
+  box-shadow: 4px 4px 0px var(--ink);
+}
+
+.pull-quote p {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.25rem !important;
+  font-weight: 700;
+  color: var(--ink) !important;
+  margin-bottom: 0 !important;
+  text-align: center;
+}
+
+/* Efeito Washi Tape para Imagens */
+.washi-tape-img {
+  position: relative;
+  display: inline-block;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.washi-tape-img::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 120px;
+  height: 25px;
+  background-color: var(--k-acid);
+  border: 1px solid var(--ink);
+  opacity: 0.92;
+  z-index: 10;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}

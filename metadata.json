@@ -1,0 +1,8 @@
+{
+  "name": "Além da Grade | Diário de Campo",
+  "description": "Um diário de campo sobre cultura de fã, aprendizagem, neurodivergência e vida adulta por Laryliissa.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
