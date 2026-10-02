@@ -243,7 +243,7 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
                     <img
                       src={block.content as string}
                       alt={block.caption || 'Post image'}
-                      className="w-full h-auto object-cover img-border shadow-[3px_3px_0_var(--ink)]"
+                      className="w-full h-auto object-contain img-border shadow-[3px_3px_0_var(--ink)] rounded-xl"
                     />
                     {block.caption && (
                       <p className="mono-font text-xs text-center mt-3 text-neutral-500 italic">

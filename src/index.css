@@ -118,6 +118,15 @@ body {
   border: 2px solid var(--ink);
 }
 
+/* Sem barra de rolagem visível */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Estilo do Post Dedicado */
 .post-container {
   background-color: #ffffff;

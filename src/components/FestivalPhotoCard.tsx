@@ -16,19 +16,23 @@ export const FestivalPhotoCard: React.FC<FestivalPhotoCardProps> = ({
 }) => {
   const [loadFailed, setLoadFailed] = useState(false);
 
-  // Exibe a imagem real da autora sem cortes e sem alterações
+  // Exibe a imagem real da autora sem nenhum corte (object-contain e altura proporcional)
   if (!loadFailed && src) {
     return (
-      <img
-        src={src}
-        alt={alt}
-        onError={() => setLoadFailed(true)}
-        className={`${className} object-contain sm:object-cover w-full h-auto max-h-[720px] rounded-xl`}
-      />
+      <div
+        className={`relative overflow-hidden flex items-center justify-center bg-[#fdfcf9] rounded-xl ${className}`}
+      >
+        <img
+          src={src}
+          alt={alt}
+          onError={() => setLoadFailed(true)}
+          className="w-full h-auto object-contain block mx-auto rounded-xl transition-transform duration-300 hover:scale-[1.01]"
+        />
+      </div>
     );
   }
 
-  // Fallback neutro e limpo caso o arquivo ainda não esteja no diretório público
+  // Fallback neutro caso ocorra falha no carregamento
   return (
     <div
       className={`w-full ${

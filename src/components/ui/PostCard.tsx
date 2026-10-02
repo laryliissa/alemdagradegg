@@ -33,7 +33,7 @@ export const PostCard: React.FC<PostCardProps> = ({
       className="group relative bg-white border-2 border-[var(--ink)] rounded-2xl shadow-[4px_4px_0_var(--ink)] hover:shadow-[6px_6px_0_var(--k-pink)] hover:-translate-x-0.5 hover:-translate-y-1 transition-all duration-200 cursor-pointer flex flex-col overflow-hidden"
     >
       {/* Imagem com Efeito Washi Tape Colada */}
-      <div className="relative w-full h-52 sm:h-56 bg-neutral-100 overflow-hidden border-b-2 border-[var(--ink)]">
+      <div className="relative w-full h-56 sm:h-64 bg-[#fbf9f4] overflow-hidden border-b-2 border-[var(--ink)] flex items-center justify-center">
         {/* Fita Adesiva Decorativa no Topo */}
         <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-28 h-5.5 bg-[var(--k-acid)] border border-[var(--ink)] opacity-95 shadow-[1px_1px_0_rgba(22,17,36,0.3)] transform -rotate-2 group-hover:rotate-0 transition-transform duration-200 pointer-events-none" />
 
@@ -41,7 +41,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           src={post.coverImage}
           alt={post.title}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-contain p-1 transition-transform duration-500 group-hover:scale-102"
         />
 
         {/* Badges de Território e Status */}

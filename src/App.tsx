@@ -479,18 +479,18 @@ export default function App() {
             <div className="flex flex-col gap-10">
               {/* DESTAQUE PRINCIPAL (Rock in Rio / Stray Kids) */}
               {featuredPost && (
-                <article className="sticker-card p-5 sm:p-7 bg-white flex flex-col md:flex-row gap-6 items-center">
-                  <div className="w-full md:w-1/2 flex items-center justify-center">
-                    <div className="w-full relative washi-tape-img my-0">
+                <article className="sticker-card p-5 sm:p-7 bg-white flex flex-col md:flex-row gap-6 sm:gap-8 items-center md:items-start">
+                  <div className="w-full md:w-5/12 flex items-center justify-center shrink-0">
+                    <div className="w-full max-w-xs sm:max-w-sm relative washi-tape-img my-0 flex justify-center">
                       <FestivalPhotoCard
                         src={featuredPost.coverImage}
                         alt={featuredPost.title}
-                        className="img-border w-full h-56 sm:h-64 shadow-[4px_4px_0_var(--ink)]"
+                        className="img-border w-full h-auto shadow-[4px_4px_0_var(--ink)]"
                       />
                     </div>
                   </div>
 
-                  <div className="w-full md:w-1/2 flex flex-col justify-center py-2">
+                  <div className="w-full md:w-7/12 flex flex-col justify-between py-2 self-stretch">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="pill bg-[var(--k-acid)] text-[var(--ink)] w-fit">
                         Destaque
