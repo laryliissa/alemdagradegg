@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Camera, Sparkles, Heart } from 'lucide-react';
+import { Camera } from 'lucide-react';
 
 interface FestivalPhotoCardProps {
-  src: string;
-  alt: string;
+  src?: string;
+  alt?: string;
   className?: string;
   isDetailedView?: boolean;
 }
@@ -16,7 +16,6 @@ export const FestivalPhotoCard: React.FC<FestivalPhotoCardProps> = ({
 }) => {
   const [loadFailed, setLoadFailed] = useState(false);
 
-  // Se a imagem carregar com sucesso (ex: no GitHub Pages ou quando adicionada à pasta), exibe a foto real
   if (!loadFailed && src) {
     return (
       <img

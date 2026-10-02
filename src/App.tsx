@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Sparkles,
   Plus,
@@ -27,18 +27,17 @@ import {
   Unlock,
   Eye,
   EyeOff,
-} from 'lucide-react';
-import { usePostsStore } from './data/usePostsStore.ts';
-import { PostItem, Territory } from './data/postsData.ts';
-import { useAuthorAuth } from './data/useAuthorAuth.ts';
-import { DedicatedPostView } from './components/DedicatedPostView.tsx';
-import { PostEditorModal } from './components/PostEditorModal.tsx';
-import { ToploaderBoardModal } from './components/ToploaderBoardModal.tsx';
-import { ManifestoDrawerModal } from './components/ManifestoDrawerModal.tsx';
-import { AmbientSoundPlayer } from './components/AmbientSoundPlayer.tsx';
-import { AuthorAuthModal } from './components/AuthorAuthModal.tsx';
-import { Logo } from './components/Logo.tsx';
-import { FestivalPhotoCard } from './components/FestivalPhotoCard.tsx';
+} from "lucide-react";
+import { usePostsStore } from "./data/usePostsStore.ts";
+import { PostItem, Territory } from "./data/postsData.ts";
+import { useAuthorAuth } from "./data/useAuthorAuth.ts";
+import { DedicatedPostView } from "./components/DedicatedPostView.tsx";
+import { PostEditorModal } from "./components/PostEditorModal.tsx";
+import { ToploaderBoardModal } from "./components/ToploaderBoardModal.tsx";
+import { ManifestoDrawerModal } from "./components/ManifestoDrawerModal.tsx";
+import { AmbientSoundPlayer } from "./components/AmbientSoundPlayer.tsx";
+import { AuthorAuthModal } from "./components/AuthorAuthModal.tsx";
+import { Logo } from "./components/Logo.tsx";
 
 export default function App() {
   const {
@@ -52,14 +51,19 @@ export default function App() {
     importBackup,
   } = usePostsStore();
 
-  const { isAuthenticated, login, logout, updatePin, defaultPinHint } = useAuthorAuth();
+  const { isAuthenticated, login, logout, updatePin, defaultPinHint } =
+    useAuthorAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authorViewFilter, setAuthorViewFilter] = useState<'all' | 'published' | 'drafts'>('all');
+  const [authorViewFilter, setAuthorViewFilter] = useState<
+    "all" | "published" | "drafts"
+  >("all");
 
   // Estados de Navegação e Filtros
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-  const [selectedTerritory, setSelectedTerritory] = useState<Territory | 'Todos'>('Todos');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTerritory, setSelectedTerritory] = useState<
+    Territory | "Todos"
+  >("Todos");
+  const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Estados de Modais
@@ -69,49 +73,49 @@ export default function App() {
   const [isManifestoOpen, setIsManifestoOpen] = useState(false);
 
   // Estados de Feedback
-  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [backupNotice, setBackupNotice] = useState<string | null>(null);
 
   // Sincronização robusta com Hash para suporte a GitHub Pages e histórico do navegador
   useEffect(() => {
     const handleHashChange = () => {
-      const rawHash = window.location.hash || '';
+      const rawHash = window.location.hash || "";
       // Normaliza hash aceitando tanto '#post/...' quanto '#/post/...'
-      const normalized = rawHash.replace(/^#\/?/, '#');
+      const normalized = rawHash.replace(/^#\/?/, "#");
 
-      if (normalized.startsWith('#post/')) {
-        const slug = normalized.replace('#post/', '');
+      if (normalized.startsWith("#post/")) {
+        const slug = normalized.replace("#post/", "");
         const found = posts.find((p) => p.slug === slug || p.id === slug);
         if (found) {
           setSelectedPostId(found.id);
         }
-      } else if (normalized === '#manifesto') {
+      } else if (normalized === "#manifesto") {
         setIsManifestoOpen(true);
-      } else if (normalized === '#novo-post') {
+      } else if (normalized === "#novo-post") {
         setPostToEdit(null);
         setIsEditorOpen(true);
-      } else if (!rawHash || rawHash === '#' || rawHash === '#/') {
+      } else if (!rawHash || rawHash === "#" || rawHash === "#/") {
         setSelectedPostId(null);
       }
     };
 
-    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
     handleHashChange();
 
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, [posts]);
 
   const openPost = (post: PostItem) => {
     setSelectedPostId(post.id);
     window.location.hash = `#post/${post.slug}`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const backToFeed = () => {
     setSelectedPostId(null);
-    window.location.hash = '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.location.hash = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleEditClick = (post: PostItem, e?: React.MouseEvent) => {
@@ -120,9 +124,15 @@ export default function App() {
     setIsEditorOpen(true);
   };
 
-  const handleDeleteClick = (id: string, title: string, e: React.MouseEvent) => {
+  const handleDeleteClick = (
+    id: string,
+    title: string,
+    e: React.MouseEvent,
+  ) => {
     e.stopPropagation();
-    const confirmed = window.confirm(`Deseja realmente remover o relato "${title}"?`);
+    const confirmed = window.confirm(
+      `Deseja realmente remover o relato "${title}"?`,
+    );
     if (confirmed) {
       deletePost(id);
       if (selectedPostId === id) {
@@ -135,17 +145,17 @@ export default function App() {
     e.preventDefault();
     if (!newsletterEmail.trim()) return;
     setNewsletterSubscribed(true);
-    setNewsletterEmail('');
+    setNewsletterEmail("");
     setTimeout(() => setNewsletterSubscribed(false), 4000);
   };
 
   // Contagem dinâmica de territórios
   const territoryCounts = useMemo(() => {
     const counts: Record<Territory, number> = {
-      'Espaços & Corpos': 0,
-      'Mesa de Criação': 0,
-      'Filtros & Limites': 0,
-      'Aprendizagens': 0,
+      "Espaços & Corpos": 0,
+      "Mesa de Criação": 0,
+      "Filtros & Limites": 0,
+      Aprendizagens: 0,
     };
     posts.forEach((p) => {
       if (counts[p.territory] !== undefined) {
@@ -163,28 +173,36 @@ export default function App() {
 
       // Autora pode alternar visualização
       if (isAuthenticated) {
-        if (authorViewFilter === 'published' && post.isDraft) return false;
-        if (authorViewFilter === 'drafts' && !post.isDraft) return false;
+        if (authorViewFilter === "published" && post.isDraft) return false;
+        if (authorViewFilter === "drafts" && !post.isDraft) return false;
       }
 
       const matchTerritory =
-        selectedTerritory === 'Todos' || post.territory === selectedTerritory;
+        selectedTerritory === "Todos" || post.territory === selectedTerritory;
       const q = searchQuery.toLowerCase().trim();
       const matchSearch =
         !q ||
-        (post.title || '').toLowerCase().includes(q) ||
-        (post.subtitle || '').toLowerCase().includes(q) ||
-        (post.fieldNoteQuestion || '').toLowerCase().includes(q) ||
+        (post.title || "").toLowerCase().includes(q) ||
+        (post.subtitle || "").toLowerCase().includes(q) ||
+        (post.fieldNoteQuestion || "").toLowerCase().includes(q) ||
         (Array.isArray(post.blocks) &&
           post.blocks.some((b) =>
-            typeof b.content === 'string'
+            typeof b.content === "string"
               ? b.content.toLowerCase().includes(q)
               : Array.isArray(b.content) &&
-                b.content.some((c) => typeof c === 'string' && c.toLowerCase().includes(q))
+                b.content.some(
+                  (c) => typeof c === "string" && c.toLowerCase().includes(q),
+                ),
           ));
       return matchTerritory && matchSearch;
     });
-  }, [posts, selectedTerritory, searchQuery, isAuthenticated, authorViewFilter]);
+  }, [
+    posts,
+    selectedTerritory,
+    searchQuery,
+    isAuthenticated,
+    authorViewFilter,
+  ]);
 
   // Post atualmente visualizado na página dedicada
   const activePost = useMemo(() => {
@@ -232,27 +250,27 @@ export default function App() {
             <button
               onClick={() => {
                 backToFeed();
-                setSelectedTerritory('Todos');
+                setSelectedTerritory("Todos");
               }}
-              className={`nav-link ${!selectedPostId && selectedTerritory === 'Todos' ? 'active' : ''}`}
+              className={`nav-link ${!selectedPostId && selectedTerritory === "Todos" ? "active" : ""}`}
             >
               Início
             </button>
             <button
               onClick={() => {
                 backToFeed();
-                const el = document.getElementById('feed-section');
-                el?.scrollIntoView({ behavior: 'smooth' });
+                const el = document.getElementById("feed-section");
+                el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className={`nav-link ${selectedPostId ? 'active' : ''}`}
+              className={`nav-link ${selectedPostId ? "active" : ""}`}
             >
               Diário de Campo
             </button>
             <button
               onClick={() => {
                 backToFeed();
-                const el = document.getElementById('territorios-widget');
-                el?.scrollIntoView({ behavior: 'smooth' });
+                const el = document.getElementById("territorios-widget");
+                el?.scrollIntoView({ behavior: "smooth" });
               }}
               className="nav-link"
             >
@@ -287,14 +305,22 @@ export default function App() {
               onClick={() => setIsAuthModalOpen(true)}
               className={`mono-font text-[11px] font-bold uppercase px-3 py-2 rounded-full border-2 border-[var(--ink)] transition-all shadow-[2px_2px_0_var(--ink)] flex items-center gap-1.5 ${
                 isAuthenticated
-                  ? 'bg-emerald-400 text-[var(--ink)] font-bold'
-                  : 'bg-white text-neutral-600 hover:bg-neutral-100'
+                  ? "bg-emerald-400 text-[var(--ink)] font-bold"
+                  : "bg-white text-neutral-600 hover:bg-neutral-100"
               }`}
-              title={isAuthenticated ? 'Modo Autora Ativo (Gerenciar)' : 'Acesso da Autora (PIN)'}
+              title={
+                isAuthenticated
+                  ? "Modo Autora Ativo (Gerenciar)"
+                  : "Acesso da Autora (PIN)"
+              }
             >
-              {isAuthenticated ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+              {isAuthenticated ? (
+                <Unlock className="w-3.5 h-3.5" />
+              ) : (
+                <Lock className="w-3.5 h-3.5" />
+              )}
               <span className="hidden md:inline">
-                {isAuthenticated ? 'Modo Autora' : 'Autora'}
+                {isAuthenticated ? "Modo Autora" : "Autora"}
               </span>
             </button>
 
@@ -304,7 +330,11 @@ export default function App() {
               className="md:hidden p-2 text-[var(--ink)] rounded-lg hover:bg-neutral-100"
               aria-label="Abrir menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -324,31 +354,31 @@ export default function App() {
 
               <div className="flex items-center gap-1 bg-white border border-[var(--ink)] rounded-lg p-0.5 shadow-xs">
                 <button
-                  onClick={() => setAuthorViewFilter('all')}
+                  onClick={() => setAuthorViewFilter("all")}
                   className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    authorViewFilter === 'all'
-                      ? 'bg-[var(--ink)] text-white'
-                      : 'text-neutral-700 hover:bg-neutral-100'
+                    authorViewFilter === "all"
+                      ? "bg-[var(--ink)] text-white"
+                      : "text-neutral-700 hover:bg-neutral-100"
                   }`}
                 >
                   Todos ({posts.length})
                 </button>
                 <button
-                  onClick={() => setAuthorViewFilter('published')}
+                  onClick={() => setAuthorViewFilter("published")}
                   className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    authorViewFilter === 'published'
-                      ? 'bg-emerald-600 text-white'
-                      : 'text-neutral-700 hover:bg-neutral-100'
+                    authorViewFilter === "published"
+                      ? "bg-emerald-600 text-white"
+                      : "text-neutral-700 hover:bg-neutral-100"
                   }`}
                 >
                   Publicados ({posts.filter((p) => !p.isDraft).length})
                 </button>
                 <button
-                  onClick={() => setAuthorViewFilter('drafts')}
+                  onClick={() => setAuthorViewFilter("drafts")}
                   className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    authorViewFilter === 'drafts'
-                      ? 'bg-[var(--k-pink)] text-white'
-                      : 'text-neutral-700 hover:bg-neutral-100'
+                    authorViewFilter === "drafts"
+                      ? "bg-[var(--k-pink)] text-white"
+                      : "text-neutral-700 hover:bg-neutral-100"
                   }`}
                 >
                   Rascunhos ({posts.filter((p) => p.isDraft).length})
@@ -399,7 +429,7 @@ export default function App() {
             <button
               onClick={() => {
                 backToFeed();
-                setSelectedTerritory('Todos');
+                setSelectedTerritory("Todos");
                 setMobileMenuOpen(false);
               }}
               className="text-left font-bold text-sm py-2 px-3 hover:bg-[var(--bg-dots)] rounded-lg"
@@ -422,7 +452,8 @@ export default function App() {
               }}
               className="text-left font-bold text-sm py-2 px-3 hover:bg-[var(--bg-dots)] rounded-lg flex items-center gap-2"
             >
-              <Scissors className="w-4 h-4 text-[var(--k-pink)]" /> Mural de Toploaders
+              <Scissors className="w-4 h-4 text-[var(--k-pink)]" /> Mural de
+              Toploaders
             </button>
             <button
               onClick={() => {
@@ -432,7 +463,11 @@ export default function App() {
               className="text-left font-bold text-sm py-2 px-3 hover:bg-[var(--bg-dots)] rounded-lg flex items-center gap-2"
             >
               <Lock className="w-4 h-4 text-neutral-500" />
-              <span>{isAuthenticated ? 'Gerenciar Modo Autora' : 'Acesso da Autora (PIN)'}</span>
+              <span>
+                {isAuthenticated
+                  ? "Gerenciar Modo Autora"
+                  : "Acesso da Autora (PIN)"}
+              </span>
             </button>
             {isAuthenticated && (
               <button
@@ -477,10 +512,14 @@ export default function App() {
                 <article className="sticker-card p-5 sm:p-7 bg-white flex flex-col md:flex-row gap-6 items-center">
                   <div className="w-full md:w-1/2 flex items-center justify-center">
                     <div className="w-full relative washi-tape-img my-0">
-                      <FestivalPhotoCard
+                      <img
                         src={featuredPost.coverImage}
                         alt={featuredPost.title}
-                        className="img-border w-full h-56 sm:h-64 shadow-[4px_4px_0_var(--ink)]"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "https://images.unsplash.com/photo-1540039155732-d674140ca1d4?auto=format&fit=crop&q=80&w=800";
+                        }}
+                        className="img-border w-full h-56 sm:h-64 shadow-[4px_4px_0_var(--ink)] object-cover"
                       />
                     </div>
                   </div>
@@ -515,10 +554,13 @@ export default function App() {
                     <div className="flex items-center justify-between mt-auto pt-3 border-t border-dashed border-neutral-200">
                       <div className="mono-font text-[10px] text-neutral-500 flex items-center gap-2">
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-[var(--k-lilac)]" /> {featuredPost.date}
+                          <Calendar className="w-3 h-3 text-[var(--k-lilac)]" />{" "}
+                          {featuredPost.date}
                         </span>
                         <span>•</span>
-                        <span className="text-[var(--k-cyan)] font-bold">{featuredPost.readTime}</span>
+                        <span className="text-[var(--k-cyan)] font-bold">
+                          {featuredPost.readTime}
+                        </span>
                       </div>
 
                       <button
@@ -545,10 +587,11 @@ export default function App() {
                     </h3>
                   </div>
                   <p className="text-sm font-medium text-neutral-800 leading-relaxed">
-                    Minha pesquisa é sobre como ficar além da grade — sendo fã de um jeito que recusa o
-                    sacrifício físico — gera aprendizagem, mesmo quando o fandom não é o lugar de
-                    acolhimento que promete ser. E é esse aprendizado que traz pertencimento e melhora a
-                    vida.
+                    Minha pesquisa é sobre como ficar além da grade — sendo fã
+                    de um jeito que recusa o sacrifício físico — gera
+                    aprendizagem, mesmo quando o fandom não é o lugar de
+                    acolhimento que promete ser. E é esse aprendizado que traz
+                    pertencimento e melhora a vida.
                   </p>
                 </div>
                 <div className="shrink-0">
@@ -573,24 +616,31 @@ export default function App() {
 
                   {/* Barra de Filtro de Territórios Rápida */}
                   <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
-                    {(['Todos', 'Espaços & Corpos', 'Mesa de Criação', 'Filtros & Limites', 'Aprendizagens'] as const).map(
-                      (ter) => {
-                        const active = selectedTerritory === ter;
-                        return (
-                          <button
-                            key={ter}
-                            onClick={() => setSelectedTerritory(ter)}
-                            className={`mono-font text-[10px] uppercase font-bold px-3 py-1.5 rounded-full border-2 whitespace-nowrap transition-all ${
-                              active
-                                ? 'bg-[var(--ink)] text-white border-[var(--ink)] shadow-[2px_2px_0_var(--k-acid)]'
-                                : 'bg-white text-neutral-700 border-neutral-300 hover:border-[var(--ink)]'
-                            }`}
-                          >
-                            {ter} {ter !== 'Todos' && `(${territoryCounts[ter] || 0})`}
-                          </button>
-                        );
-                      }
-                    )}
+                    {(
+                      [
+                        "Todos",
+                        "Espaços & Corpos",
+                        "Mesa de Criação",
+                        "Filtros & Limites",
+                        "Aprendizagens",
+                      ] as const
+                    ).map((ter) => {
+                      const active = selectedTerritory === ter;
+                      return (
+                        <button
+                          key={ter}
+                          onClick={() => setSelectedTerritory(ter)}
+                          className={`mono-font text-[10px] uppercase font-bold px-3 py-1.5 rounded-full border-2 whitespace-nowrap transition-all ${
+                            active
+                              ? "bg-[var(--ink)] text-white border-[var(--ink)] shadow-[2px_2px_0_var(--k-acid)]"
+                              : "bg-white text-neutral-700 border-neutral-300 hover:border-[var(--ink)]"
+                          }`}
+                        >
+                          {ter}{" "}
+                          {ter !== "Todos" && `(${territoryCounts[ter] || 0})`}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -602,8 +652,8 @@ export default function App() {
                     </p>
                     <button
                       onClick={() => {
-                        setSelectedTerritory('Todos');
-                        setSearchQuery('');
+                        setSelectedTerritory("Todos");
+                        setSearchQuery("");
                       }}
                       className="mono-font text-xs font-bold uppercase bg-[var(--k-acid)] px-4 py-2 border-2 border-[var(--ink)] rounded-full shadow-[2px_2px_0_var(--ink)]"
                     >
@@ -614,13 +664,13 @@ export default function App() {
                   <div className="flex flex-col gap-6">
                     {filteredPosts.map((post) => {
                       const territoryColor =
-                        post.territory === 'Espaços & Corpos'
-                          ? 'var(--k-cyan)'
-                          : post.territory === 'Mesa de Criação'
-                          ? 'var(--k-lilac)'
-                          : post.territory === 'Filtros & Limites'
-                          ? 'var(--k-acid)'
-                          : 'var(--k-pink)';
+                        post.territory === "Espaços & Corpos"
+                          ? "var(--k-cyan)"
+                          : post.territory === "Mesa de Criação"
+                            ? "var(--k-lilac)"
+                            : post.territory === "Filtros & Limites"
+                              ? "var(--k-acid)"
+                              : "var(--k-pink)";
 
                       return (
                         <article
@@ -634,7 +684,7 @@ export default function App() {
                               alt={post.title}
                               onError={(e) => {
                                 (e.target as HTMLImageElement).src =
-                                  'https://images.unsplash.com/photo-1540039155732-d674140ca1d4?auto=format&fit=crop&q=80&w=800';
+                                  "https://images.unsplash.com/photo-1540039155732-d674140ca1d4?auto=format&fit=crop&q=80&w=800";
                               }}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
@@ -694,11 +744,19 @@ export default function App() {
                                     className="mono-font text-[10px] font-bold text-neutral-600 hover:text-[var(--ink)] flex items-center gap-1"
                                     title="Alternar entre rascunho e público"
                                   >
-                                    {post.isDraft ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                                    <span>{post.isDraft ? 'Publicar' : 'Ocultar'}</span>
+                                    {post.isDraft ? (
+                                      <Eye className="w-3 h-3" />
+                                    ) : (
+                                      <EyeOff className="w-3 h-3" />
+                                    )}
+                                    <span>
+                                      {post.isDraft ? "Publicar" : "Ocultar"}
+                                    </span>
                                   </button>
                                   <button
-                                    onClick={(e) => handleDeleteClick(post.id, post.title, e)}
+                                    onClick={(e) =>
+                                      handleDeleteClick(post.id, post.title, e)
+                                    }
                                     className="mono-font text-[10px] font-bold text-neutral-400 hover:text-red-600 flex items-center gap-1"
                                     title="Excluir do diário"
                                   >
@@ -741,7 +799,7 @@ export default function App() {
                       alt="Laryliissa"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
-                          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400';
+                          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400";
                       }}
                       className="w-full h-full object-cover border border-[var(--ink)] sepia-[.2] contrast-[1.05] group-hover:sepia-0 transition-all duration-500"
                     />
@@ -756,8 +814,9 @@ export default function App() {
                 </h3>
 
                 <p className="text-xs font-medium text-neutral-700 leading-relaxed mb-5">
-                  Pedagoga, psicopedagoga e fã. Com um diagnóstico tardio de neurodivergência aos 30+,
-                  encontrei na cultura asiática e no K-pop o caminho para resgatar a própria identidade.
+                  Pedagoga, psicopedagoga e fã. Com um diagnóstico tardio de
+                  neurodivergência aos 30+, encontrei na cultura asiática e no
+                  K-pop o caminho para resgatar a própria identidade.
                 </p>
 
                 <button
@@ -778,15 +837,22 @@ export default function App() {
                   className="flex-grow px-3 py-2 text-sm focus:outline-none bg-transparent font-medium placeholder-neutral-400"
                 />
                 <button
-                  onClick={() => setSearchQuery('')}
+                  onClick={() => setSearchQuery("")}
                   className="p-2 text-neutral-400 hover:text-[var(--k-pink)]"
                 >
-                  {searchQuery ? <X className="w-4 h-4" /> : <Search className="w-4 h-4" />}
+                  {searchQuery ? (
+                    <X className="w-4 h-4" />
+                  ) : (
+                    <Search className="w-4 h-4" />
+                  )}
                 </button>
               </div>
 
               {/* Widget: Territórios / Categorias */}
-              <div id="territorios-widget" className="sticker-card p-6 bg-white">
+              <div
+                id="territorios-widget"
+                className="sticker-card p-6 bg-white"
+              >
                 <h3 className="display-font text-lg font-bold border-b-2 border-dashed border-[var(--ink)] pb-2 mb-4">
                   Territórios
                 </h3>
@@ -794,9 +860,11 @@ export default function App() {
                 <ul className="flex flex-col gap-3 text-sm font-medium text-neutral-700">
                   <li>
                     <button
-                      onClick={() => setSelectedTerritory('Mesa de Criação')}
+                      onClick={() => setSelectedTerritory("Mesa de Criação")}
                       className={`w-full flex justify-between items-center group transition-colors ${
-                        selectedTerritory === 'Mesa de Criação' ? 'text-[var(--k-lilac)] font-bold' : 'hover:text-[var(--k-lilac)]'
+                        selectedTerritory === "Mesa de Criação"
+                          ? "text-[var(--k-lilac)] font-bold"
+                          : "hover:text-[var(--k-lilac)]"
                       }`}
                     >
                       <span className="flex items-center gap-2">
@@ -804,15 +872,17 @@ export default function App() {
                         Mesa de Criação
                       </span>
                       <span className="mono-font text-[10px] bg-[var(--bg-dots)] px-2 py-0.5 rounded border border-[var(--ink)]">
-                        {territoryCounts['Mesa de Criação']}
+                        {territoryCounts["Mesa de Criação"]}
                       </span>
                     </button>
                   </li>
                   <li>
                     <button
-                      onClick={() => setSelectedTerritory('Espaços & Corpos')}
+                      onClick={() => setSelectedTerritory("Espaços & Corpos")}
                       className={`w-full flex justify-between items-center group transition-colors ${
-                        selectedTerritory === 'Espaços & Corpos' ? 'text-[var(--k-cyan)] font-bold' : 'hover:text-[var(--k-cyan)]'
+                        selectedTerritory === "Espaços & Corpos"
+                          ? "text-[var(--k-cyan)] font-bold"
+                          : "hover:text-[var(--k-cyan)]"
                       }`}
                     >
                       <span className="flex items-center gap-2">
@@ -820,15 +890,17 @@ export default function App() {
                         Espaços & Corpos
                       </span>
                       <span className="mono-font text-[10px] bg-[var(--bg-dots)] px-2 py-0.5 rounded border border-[var(--ink)]">
-                        {territoryCounts['Espaços & Corpos']}
+                        {territoryCounts["Espaços & Corpos"]}
                       </span>
                     </button>
                   </li>
                   <li>
                     <button
-                      onClick={() => setSelectedTerritory('Filtros & Limites')}
+                      onClick={() => setSelectedTerritory("Filtros & Limites")}
                       className={`w-full flex justify-between items-center group transition-colors ${
-                        selectedTerritory === 'Filtros & Limites' ? 'text-[var(--k-acid)] font-bold' : 'hover:text-[var(--k-acid)]'
+                        selectedTerritory === "Filtros & Limites"
+                          ? "text-[var(--k-acid)] font-bold"
+                          : "hover:text-[var(--k-acid)]"
                       }`}
                     >
                       <span className="flex items-center gap-2">
@@ -836,15 +908,17 @@ export default function App() {
                         Filtros & Limites
                       </span>
                       <span className="mono-font text-[10px] bg-[var(--bg-dots)] px-2 py-0.5 rounded border border-[var(--ink)]">
-                        {territoryCounts['Filtros & Limites']}
+                        {territoryCounts["Filtros & Limites"]}
                       </span>
                     </button>
                   </li>
                   <li>
                     <button
-                      onClick={() => setSelectedTerritory('Aprendizagens')}
+                      onClick={() => setSelectedTerritory("Aprendizagens")}
                       className={`w-full flex justify-between items-center group transition-colors ${
-                        selectedTerritory === 'Aprendizagens' ? 'text-[var(--k-pink)] font-bold' : 'hover:text-[var(--k-pink)]'
+                        selectedTerritory === "Aprendizagens"
+                          ? "text-[var(--k-pink)] font-bold"
+                          : "hover:text-[var(--k-pink)]"
                       }`}
                     >
                       <span className="flex items-center gap-2">
@@ -852,7 +926,7 @@ export default function App() {
                         Aprendizagens
                       </span>
                       <span className="mono-font text-[10px] bg-[var(--bg-dots)] px-2 py-0.5 rounded border border-[var(--ink)]">
-                        {territoryCounts['Aprendizagens']}
+                        {territoryCounts["Aprendizagens"]}
                       </span>
                     </button>
                   </li>
@@ -886,10 +960,13 @@ export default function App() {
                   <div className="bg-white p-2 rounded-lg border-2 border-[var(--ink)]">
                     <Mail className="w-5 h-5 text-[var(--ink)]" />
                   </div>
-                  <h3 className="display-font text-lg font-bold">Receba novos escritos</h3>
+                  <h3 className="display-font text-lg font-bold">
+                    Receba novos escritos
+                  </h3>
                 </div>
                 <p className="text-xs font-medium mb-4 text-[var(--ink)] opacity-85">
-                  Assine a newsletter e receba notas de campo e reflexões da semana no seu e-mail.
+                  Assine a newsletter e receba notas de campo e reflexões da
+                  semana no seu e-mail.
                 </p>
 
                 {newsletterSubscribed ? (
@@ -898,7 +975,10 @@ export default function App() {
                     Obrigada! Você receberá as próximas notas de campo.
                   </div>
                 ) : (
-                  <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
+                  <form
+                    onSubmit={handleNewsletterSubmit}
+                    className="flex flex-col gap-2"
+                  >
                     <input
                       type="email"
                       required
@@ -923,7 +1003,8 @@ export default function App() {
                   Cópia de Segurança
                 </h4>
                 <p className="text-[11px] text-neutral-600 mb-3">
-                  Baixe uma cópia de segurança dos seus textos ou restaure os ensaios originais.
+                  Baixe uma cópia de segurança dos seus textos ou restaure os
+                  ensaios originais.
                 </p>
                 <div className="flex flex-col gap-2">
                   <button
@@ -935,15 +1016,22 @@ export default function App() {
 
                   <button
                     onClick={() => {
-                      if (window.confirm('Deseja recarregar a coleção original de ensaios?')) {
+                      if (
+                        window.confirm(
+                          "Deseja recarregar a coleção original de ensaios?",
+                        )
+                      ) {
                         resetDefaults();
-                        setBackupNotice('Textos originais restaurados com sucesso!');
+                        setBackupNotice(
+                          "Textos originais restaurados com sucesso!",
+                        );
                         setTimeout(() => setBackupNotice(null), 3000);
                       }
                     }}
                     className="mono-font text-[10px] text-neutral-500 hover:text-red-600 flex items-center justify-center gap-1 py-1"
                   >
-                    <RotateCcw className="w-3 h-3" /> Restaurar Ensaios Originais
+                    <RotateCcw className="w-3 h-3" /> Restaurar Ensaios
+                    Originais
                   </button>
 
                   {backupNotice && (
