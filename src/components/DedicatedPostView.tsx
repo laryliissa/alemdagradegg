@@ -266,7 +266,7 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
               <div className="flex items-center gap-3 text-center sm:text-left">
                 <div className="w-12 h-12 rounded-full border-2 border-[var(--ink)] overflow-hidden bg-[var(--k-lilac)] shrink-0">
                   <img
-                    src="foto-lary.jpg"
+                    src="profile.webp"
                     alt="Laryliissa"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';

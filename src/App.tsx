@@ -795,7 +795,7 @@ export default function App() {
                   {/* Moldura Polaroid */}
                   <div className="w-full h-full rounded-md border-2 border-[var(--ink)] overflow-hidden shadow-[4px_4px_0_var(--ink)] group-hover:shadow-[6px_6px_0_var(--k-pink)] group-hover:-translate-y-1 transition-all duration-300 bg-white p-1.5 pb-5 transform rotate-3 group-hover:rotate-0">
                     <img
-                      src="foto-lary.jpg"
+                      src="profile.webp"
                       alt="Laryliissa"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
