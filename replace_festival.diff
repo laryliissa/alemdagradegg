@@ -1,0 +1,80 @@
+<<<<<<< SEARCH
+  // Fallback de alta fidelidade representando a colagem de 4 fotos do Rock in Rio 2026 enviada pela Laryliissa:
+  // 1. Selfie no gramado com óculos grandes e roda gigante ao fundo
+  // 2. Selfie com o plushie BbokAri amarelo
+  // 3. Pose dentro da moldura neon #EUVOU2026
+  // 4. Nachimbong (Lightstick do Stray Kids) apontado para o pôr do sol e o palco
+  return (
+    <div
+      className={`w-full ${
+        isDetailedView ? 'h-[420px] sm:h-[480px]' : 'h-64 sm:h-72'
+      } rounded-xl border-2 border-[var(--ink)] overflow-hidden shadow-[4px_4px_0_var(--ink)] bg-neutral-900 grid grid-cols-2 grid-rows-2 gap-1.5 p-1.5 select-none ${className}`}
+    >
+      {/* Quadrante 1 (Superior Esquerdo): Gramado & Roda Gigante */}
+      <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-950 to-neutral-950 flex flex-col justify-between p-2.5 border border-white/20">
+        <div className="flex justify-between items-center text-white">
+          <span className="mono-font text-[9px] uppercase font-bold bg-[var(--k-acid)] text-[var(--ink)] px-1.5 py-0.5 rounded shadow-sm">
+            Gramado 🌿
+          </span>
+          <span className="text-[10px] text-amber-300">🎡 Roda Gigante</span>
+        </div>
+        <div className="text-white">
+          <div className="mono-font text-[9px] text-neutral-300 font-bold">Lary no Festival</div>
+          <div className="text-[10px] text-white font-semibold">Óculos retrô & Glitters</div>
+        </div>
+      </div>
+
+      {/* Quadrante 2 (Superior Direito): Selfie com BbokAri */}
+      <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-amber-600 via-purple-950 to-neutral-950 flex flex-col justify-between p-2.5 border border-white/20">
+        <div className="flex justify-between items-center text-white">
+          <span className="mono-font text-[9px] uppercase font-bold bg-[var(--k-pink)] text-white px-1.5 py-0.5 rounded shadow-sm">
+            BbokAri 🐥
+          </span>
+          <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400" />
+        </div>
+        <div className="text-white">
+          <div className="mono-font text-[9px] text-amber-200 font-bold">Felix SKZOO</div>
+          <div className="text-[10px] text-white font-semibold">Pelúcia & Acolhimento</div>
+        </div>
+      </div>
+
+      {/* Quadrante 3 (Inferior Esquerdo): Moldura Neon Rock in Rio */}
+      <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-neutral-900 via-rose-950 to-orange-950 flex flex-col justify-between p-2.5 border border-white/20">
+        <div className="flex justify-between items-center text-white">
+          <span className="mono-font text-[9px] uppercase font-bold bg-[var(--k-cyan)] text-[var(--ink)] px-1.5 py-0.5 rounded shadow-sm">
+            Rock in Rio
+          </span>
+          <span className="mono-font text-[9px] text-orange-300 font-bold">2026</span>
+        </div>
+        <div className="text-white">
+          <div className="mono-font text-[9px] text-yellow-300 font-bold">#EUVOU2026</div>
+          <div className="text-[10px] text-neutral-200">Moldura Neon & Look</div>
+        </div>
+      </div>
+
+      {/* Quadrante 4 (Inferior Direito): Nachimbong & Pôr do Sol */}
+      <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-orange-600 via-red-950 to-neutral-950 flex flex-col justify-between p-2.5 border border-white/20">
+        <div className="flex justify-between items-center text-white">
+          <span className="mono-font text-[9px] uppercase font-bold bg-[var(--k-lilac)] text-white px-1.5 py-0.5 rounded shadow-sm">
+            Stray Kids ✦
+          </span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+        </div>
+        <div className="text-white">
+          <div className="mono-font text-[9px] text-orange-200 font-bold">Nachimbong no Sunset</div>
+          <div className="text-[10px] text-white font-semibold">Palco Principal & Laterais</div>
+        </div>
+      </div>
+    </div>
+  );
+=======
+  return (
+    <div
+      className={`w-full ${
+        isDetailedView ? 'h-[420px] sm:h-[480px]' : 'h-64 sm:h-72'
+      } rounded-xl border-2 border-[var(--ink)] overflow-hidden shadow-[4px_4px_0_var(--ink)] bg-neutral-200 flex items-center justify-center select-none ${className}`}
+    >
+      <Camera className="w-12 h-12 text-neutral-400" />
+    </div>
+  );
+>>>>>>> REPLACE

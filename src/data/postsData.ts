@@ -7,7 +7,7 @@ export type Territory =
 export type PostFormat = 'Campo' | 'Ensaio' | 'Caderno de Bordo' | 'Notas';
 
 export interface PostBlock {
-  type: 'p' | 'h2' | 'pull-quote' | 'hand-note' | 'list' | 'quote' | 'box';
+  type: 'p' | 'h2' | 'pull-quote' | 'hand-note' | 'list' | 'quote' | 'box' | 'image';
   content: string | string[];
   colorScheme?: 'lilac' | 'pink' | 'acid' | 'cyan' | 'default';
   caption?: string;
@@ -47,7 +47,7 @@ export const INITIAL_POSTS: PostItem[] = [
     date: '30 Set 2026',
     readTime: '5 min de leitura',
     author: 'Laryliissa',
-    coverImage: 'WhatsApp Image 2026-09-27 at 12.13.14.jpeg',
+    coverImage: '01.png',
     fieldNoteQuestion:
       'Até que ponto o sacrifício físico ainda é usado como régua para medir o amor de um fã?',
     isFeatured: true,
@@ -130,6 +130,10 @@ export const INITIAL_POSTS: PostItem[] = [
         type: 'p',
         content:
           'Então saímos daquele lugar. Descansamos, tomamos Coca-Cola e deitamos no chão, risos.',
+      },
+      {
+        type: 'image',
+        content: '01.png',
       },
       {
         type: 'p',

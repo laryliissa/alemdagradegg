@@ -44,7 +44,7 @@ const DEFAULT_PHOTOS = [
   {
     id: 'p1',
     name: 'Rock in Rio 2026',
-    url: 'WhatsApp Image 2026-09-27 at 12.13.14.jpeg',
+    url: '01.png',
     tag: 'Festival Stray Kids',
   },
   {

@@ -17,7 +17,7 @@ export function usePostsStore() {
               if (p.id === 'stray-kids-festival-2026') {
                 return {
                   ...p,
-                  coverImage: 'WhatsApp Image 2026-09-27 at 12.13.14.jpeg',
+                  coverImage: '01.png',
                 };
               }
               return p;
