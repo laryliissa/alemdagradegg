@@ -73,22 +73,25 @@ export default function App() {
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [backupNotice, setBackupNotice] = useState<string | null>(null);
 
-  // Sincronização simples com Hash para suporte a botões voltar do navegador
+  // Sincronização robusta com Hash para suporte a GitHub Pages e histórico do navegador
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#post/')) {
-        const slug = hash.replace('#post/', '');
+      const rawHash = window.location.hash || '';
+      // Normaliza hash aceitando tanto '#post/...' quanto '#/post/...'
+      const normalized = rawHash.replace(/^#\/?/, '#');
+
+      if (normalized.startsWith('#post/')) {
+        const slug = normalized.replace('#post/', '');
         const found = posts.find((p) => p.slug === slug || p.id === slug);
         if (found) {
           setSelectedPostId(found.id);
         }
-      } else if (hash === '#manifesto') {
+      } else if (normalized === '#manifesto') {
         setIsManifestoOpen(true);
-      } else if (hash === '#novo-post') {
+      } else if (normalized === '#novo-post') {
         setPostToEdit(null);
         setIsEditorOpen(true);
-      } else if (!hash || hash === '#') {
+      } else if (!rawHash || rawHash === '#' || rawHash === '#/') {
         setSelectedPostId(null);
       }
     };

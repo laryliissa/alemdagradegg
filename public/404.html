@@ -2,16 +2,93 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=./" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecionando | Além da Grade</title>
     <script>
-      // Redireciona mantendo qualquer hash para compatibilidade no GitHub Pages
-      window.location.replace('./' + window.location.hash);
+      (function () {
+        var loc = window.location;
+        var pathname = loc.pathname;
+        var search = loc.search || '';
+        var hash = loc.hash || '';
+
+        // Detecta se é GitHub Pages com subdiretório de repositório (ex: username.github.io/nome-do-repo/)
+        var pathSegments = pathname.split('/').filter(Boolean);
+        var isGitHubPagesDomain = loc.hostname.endsWith('github.io');
+
+        var base = '/';
+        var routePath = '';
+
+        if (isGitHubPagesDomain && pathSegments.length > 0) {
+          // O primeiro segmento no GitHub Pages é o nome do repositório
+          var repoName = pathSegments[0];
+          base = '/' + repoName + '/';
+          routePath = pathSegments.slice(1).join('/');
+        } else {
+          // Domínio customizado ou raiz
+          routePath = pathSegments.join('/');
+        }
+
+        // Se houver uma sub-rota acessada diretamente sem hash, converte para hash SPA
+        var targetHash = hash;
+        if (routePath) {
+          targetHash = '#' + routePath;
+        }
+
+        var destination = loc.protocol + '//' + loc.host + base + (search ? search : '') + targetHash;
+        window.location.replace(destination);
+      })();
     </script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #faf7f2;
+        color: #161124;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+      }
+      .card {
+        background: #ffffff;
+        border: 2px solid #161124;
+        border-radius: 16px;
+        box-shadow: 6px 6px 0 #161124;
+        padding: 32px;
+        max-width: 440px;
+        width: 100%;
+      }
+      h1 {
+        font-size: 1.25rem;
+        margin: 0 0 12px 0;
+      }
+      p {
+        font-size: 0.875rem;
+        color: #555;
+        margin: 0 0 20px 0;
+        line-height: 1.5;
+      }
+      a {
+        display: inline-block;
+        background-color: #eb3f8f;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border: 2px solid #161124;
+        border-radius: 12px;
+        text-decoration: none;
+        box-shadow: 3px 3px 0 #161124;
+      }
+    </style>
   </head>
-  <body style="font-family: sans-serif; text-align: center; padding: 50px;">
-    <h2>Carregando Além da Grade...</h2>
-    <p>Redirecionando para a página principal.</p>
-    <a href="./">Clique aqui se não for redirecionado automaticamente</a>
+  <body>
+    <div class="card">
+      <h1>Além da Grade ✦</h1>
+      <p>Redirecionando para o diário de campo...</p>
+      <a href="./">Ir para a Página Inicial</a>
+    </div>
   </body>
 </html>

@@ -4,38 +4,43 @@ Plataforma editorial e diário de campo sobre cultura de fã, neurodivergência 
 
 ---
 
-## 🚀 Como publicar no GitHub Pages (Passo a Passo Simples)
+## 🚀 Como publicar no GitHub Pages com Sucesso
 
-O projeto já está 100% configurado para o GitHub Pages com deploy automático via **GitHub Actions**!
+O projeto está totalmente preparado com caminhos relativos (`base: './'`), fallback `404.html`, `.nojekyll` e workflow do GitHub Actions.
 
-### Passo 1: Subir o projeto para o seu repositório no GitHub
-Se você usa o aplicativo **GitHub Desktop**, VS Code ou Git pelo terminal:
-1. Crie um repositório no seu GitHub (exemplo: `alem-da-grade`).
-2. Envie os arquivos deste projeto para a branch principal (`main` ou `master`).
+Existem **2 formas simples** de colocar seu site no ar:
 
-### Passo 2: Ativar o GitHub Pages com 2 cliques
-1. Abra o seu repositório no site do GitHub.
-2. Clique na aba **Settings** (Configurações) no topo.
+---
+
+### Método 1: Pelo GitHub Actions (Recomendado e Automático)
+
+1. Envie todos os arquivos do projeto para a sua branch principal (`main` ou `master`) no GitHub.
+2. No seu repositório no site do GitHub, acesse a aba **Settings** (Configurações no topo).
 3. No menu lateral esquerdo, clique em **Pages**.
-4. Em **Build and deployment** > **Source**, mude a opção para:
+4. Em **Build and deployment** > **Source**, altere de *"Deploy from a branch"* para:
    👉 **GitHub Actions**
-5. Pronto! O GitHub iniciará a compilação automaticamente.
+5. O GitHub executará automaticamente o workflow `.github/workflows/deploy.yml` e em ~1 minuto o link do seu site estará verde e pronto no topo dessa tela!
 
-Após cerca de 1 a 2 minutos, o link do seu site estará disponível no topo dessa mesma página (ex: `https://seu-usuario.github.io/alem-da-grade/`).
-
----
-
-## 🛠️ Comandos Locais (Opcional para desenvolvedores)
-
-- **Testar no computador**: `npm run dev` (abre em `http://localhost:3000`)
-- **Gerar arquivos de produção**: `npm run build` (gera a pasta pronta `dist/`)
-- **Verificar erros de código**: `npm run lint`
+> ⚠️ **Por que às vezes dava tela branca ou 404 antes?**
+> Por padrão, o GitHub Pages vem configurado para *"Deploy from a branch"*, tentando ler o `index.html` da raiz diretamente sem passar pelo Vite. Ao mudar a opção para **GitHub Actions**, o GitHub compila o React e publica a pasta `dist/` pronta!
 
 ---
 
-## ✨ Recursos Inclusos
-- **Publicação sem código**: Botão `+ Novo Escrito` com upload direto de fotos do computador/celular.
-- **Leitor Fiel com Washi Tape**: Layout idêntico ao modelo de zine/diário de campo.
-- **Toploaders Virtuais**: Mural para decorar photocards com stickers.
-- **Notas Sonoras**: Som de chuva, vinil e café acolhedor sintetizados via Web Audio API.
-- **Backup dos Textos**: Botão na barra lateral para salvar e baixar uma cópia de todos os seus relatos em JSON.
+### Método 2: Pelo Terminal / VS Code com 1 Comando (`npm run deploy`)
+
+Se você preferir publicar diretamente do seu computador sem depender do GitHub Actions:
+1. Abra o terminal na pasta do projeto.
+2. Digite:
+   ```bash
+   npm run deploy
+   ```
+3. Esse comando compilará o projeto e enviará automaticamente a pasta `dist/` para a branch `gh-pages`.
+4. Em **Settings > Pages**, basta selecionar a branch **gh-pages** e salvar!
+
+---
+
+## 🛠️ Comandos Locais
+
+- **Rodar localmente**: `npm run dev` (abre em `http://localhost:3000`)
+- **Compilar**: `npm run build`
+- **Publicar no GitHub Pages**: `npm run deploy`
