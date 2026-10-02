@@ -80,6 +80,8 @@ export const PostEditorModal: React.FC<PostEditorModalProps> = ({
   const [fieldNoteQuestion, setFieldNoteQuestion] = useState(
     postToEdit?.fieldNoteQuestion || ''
   );
+  const [isDraft, setIsDraft] = useState<boolean>(postToEdit?.isDraft || false);
+  const [customCaption, setCustomCaption] = useState<string>(postToEdit?.customCaption || '');
 
   // Converte blocks para texto simples editável se houver post anterior
   const [rawText, setRawText] = useState(() => {
@@ -248,9 +250,11 @@ export const PostEditorModal: React.FC<PostEditorModalProps> = ({
       readTime: readTime.trim() || '4 min de leitura',
       author: 'Laryliissa',
       coverImage,
+      customCaption: customCaption.trim(),
       fieldNoteQuestion: fieldNoteQuestion.trim(),
       blocks,
       isFeatured: postToEdit?.isFeatured || false,
+      isDraft,
     });
 
     onClose();
@@ -285,6 +289,44 @@ export const PostEditorModal: React.FC<PostEditorModalProps> = ({
 
         {/* Formulário com Scroll */}
         <form onSubmit={handleSavePost} className="p-5 sm:p-7 overflow-y-auto custom-scrollbar flex-grow space-y-6">
+          {/* Status de Publicação: Público vs Rascunho Pessoal */}
+          <div className="bg-[var(--bg-dots)] p-3.5 rounded-xl border-2 border-[var(--ink)] flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>
+              <span className="mono-font text-xs font-bold uppercase text-[var(--ink)] block">
+                Visibilidade do Relato
+              </span>
+              <span className="text-[11px] text-neutral-600">
+                {isDraft
+                  ? '🔒 Rascunho Pessoal: visível somente para você no Modo Autora.'
+                  : '🟢 Publicado: visível para todos os visitantes do site.'}
+              </span>
+            </div>
+            <div className="flex bg-white border-2 border-[var(--ink)] rounded-xl p-0.5 shadow-[2px_2px_0_var(--ink)] shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsDraft(false)}
+                className={`py-1.5 px-3 rounded-lg text-xs font-bold transition-colors ${
+                  !isDraft
+                    ? 'bg-emerald-500 text-white'
+                    : 'text-neutral-700 hover:bg-neutral-100'
+                }`}
+              >
+                Publicar no Blog
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsDraft(true)}
+                className={`py-1.5 px-3 rounded-lg text-xs font-bold transition-colors ${
+                  isDraft
+                    ? 'bg-[var(--k-pink)] text-white'
+                    : 'text-neutral-700 hover:bg-neutral-100'
+                }`}
+              >
+                Salvar Rascunho Privado
+              </button>
+            </div>
+          </div>
+
           {/* 1. Título e Subtítulo */}
           <div>
             <label className="mono-font text-xs font-bold uppercase text-[var(--ink)] block mb-1.5">
@@ -411,6 +453,18 @@ export const PostEditorModal: React.FC<PostEditorModalProps> = ({
                     src={coverImage}
                     alt="Preview"
                     className="w-full h-36 object-cover img-border shadow-[3px_3px_0_var(--ink)]"
+                  />
+                </div>
+                <div className="max-w-sm mx-auto mt-2">
+                  <label className="mono-font text-[10px] uppercase font-bold text-neutral-600 block mb-1">
+                    Legenda / Nota da Foto (Opcional):
+                  </label>
+                  <input
+                    type="text"
+                    value={customCaption}
+                    onChange={(e) => setCustomCaption(e.target.value)}
+                    placeholder="Ex: Registro no gramado do festival com o lightstick"
+                    className="w-full px-3 py-1.5 rounded-lg border-2 border-[var(--ink)] text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[var(--k-pink)] bg-white"
                   />
                 </div>
               </div>

@@ -11,9 +11,17 @@ export function usePostsStore() {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
           // Garante que todos os posts possuem campos obrigatórios e blocks como array
-          const validPosts = parsed.filter(
-            (p) => p && typeof p === 'object' && p.title && Array.isArray(p.blocks)
-          );
+          const validPosts = parsed
+            .filter((p) => p && typeof p === 'object' && p.title && Array.isArray(p.blocks))
+            .map((p) => {
+              if (p.id === 'stray-kids-festival-2026') {
+                return {
+                  ...p,
+                  coverImage: 'WhatsApp Image 2026-09-27 at 12.13.14.jpeg',
+                };
+              }
+              return p;
+            });
           if (validPosts.length > 0) {
             return validPosts;
           }
@@ -90,11 +98,18 @@ export function usePostsStore() {
     return false;
   };
 
+  const toggleDraft = (id: string) => {
+    setPosts((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, isDraft: !item.isDraft } : item))
+    );
+  };
+
   return {
     posts,
     addPost,
     updatePost,
     deletePost,
+    toggleDraft,
     resetDefaults,
     exportBackup,
     importBackup,

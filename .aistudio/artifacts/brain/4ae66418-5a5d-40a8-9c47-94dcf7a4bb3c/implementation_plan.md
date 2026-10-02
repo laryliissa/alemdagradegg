@@ -1,125 +1,121 @@
-# Além da Grade — Diário de Campo & Plataforma Editorial Interativa
+# Além da Grade — Plano de Implementação: Modo Autora, Estúdio de Toploaders & Trilha Lo-Fi
 
-Plataforma editorial e diário de campo que une cultura de fã, neurodivergência e vida adulta, com sistema completo de gerenciamento e publicação local de ensaios pensado especialmente para usuárias leigas em programação (sem tocar em código), upload direto de fotos, páginas de leitura imersiva com washi tape, mural de toploaders e ambientação sonora.
+Plataforma editorial e de experimentação para Laryliissa, integrando Modo Autora protegido por PIN pessoal, Estúdio de Criação de Photocards & Toploaders completo (estilo Polco/Decoden com Binder de 9 bolsos e exportação em imagem), Trilha Sonora Lo-Fi ambiente (Café em Seul e chuva suave) e personalização de fotos em todas as entradas de campo.
 
 ---
 
-## Decisões Confirmadas & Revisão do Usuário
+## Decisões Confirmadas com a Autora
 
 > [!IMPORTANT]
-> **Nova prioridade essencial adicionada**: Interface de publicação e fotos 100% amigável para quem não lida com códigos.
-
-- **Publicação 100% Visual e Sem Código**:
-  - Botão destacado no topo: **"+ Escrever Novo Post"** ou **"Novo Relato"**.
-  - Formulário guiado com campos claros:
-    - *Título do Post* (ex: "O que você gosta de fazer?").
-    - *Território / Categoria* (escolha com 1 clique: *Espaços & Corpos*, *Mesa de Criação*, *Filtros & Limites*, *Aprendizagens*).
-    - *Formato* (ex: *Diário de Campo*, *Ensaio*, *Reflexão Curta*).
-    - *Upload de Fotos Simples*:
-      - Botão **"Carregar Foto do Computador/Celular"** (converte automaticamente a foto do seu dispositivo sem precisar hospedar na internet ou colar links).
-      - Opção de escolher entre fotos temáticas prontas (shows, papelaria, diários, festivais).
-      - Pré-visualização instantânea na tela com a fita adesiva (*washi tape*) para ver exatamente como vai ficar antes de publicar.
-    - *Corpo do Texto Descomplicado*:
-      - Campo de texto natural: basta digitar e dar 'Enter' para separar os parágrafos.
-      - Botões com 1 clique para enriquecer o texto: **[+ Inserir Frase de Destaque]**, **[+ Inserir Bilhete à Mão]**, **[+ Inserir Lista de Tópicos]**.
-    - *Nota de Campo Final*: Campo específico para a pergunta reflexiva de encerramento.
-  - Edição e Exclusão Direta: Cada post terá um botão discreto de **"Editar"** ou **"Excluir"** visível na interface para correções imediatas.
-  - Backup dos Textos com 1 Clique: Botão para baixar uma cópia de segurança de todos os seus escritos no computador.
-- **Estrutura Visual do Post (`.post-container`)**:
-  - Cartão editorial com sombra sólida (`8px 8px 0px var(--ink)`), bordas de 2px e estilo scrapbook.
-  - Imagem de capa com efeito de fita adesiva (*Washi Tape*) verde ácido.
-  - Pull quotes, caligrafia *Caveat*, marcadores ✦ e bloco de encerramento *Nota de Campo*.
-- **Recursos Interativos Confirmados**:
-  1. *Filtro Ativo por Territórios e Busca Instantânea*.
-  2. *Player / Notas Sonoras de Ambientação* (Chuva suave, Vinil Lo-Fi, Café Coreano).
-  3. *Mural Interativo de Toploaders & Photocards*.
-  4. *Manifesto Completo Deslizante* ("Comece por aqui ✦").
+> As escolhas abaixo foram confirmadas através das respostas interativas e governam a arquitetura deste ciclo:
+>
+> 1. **Modo Autora Seguro com PIN Pessoal**: Visitantes comuns visualizam apenas os ensaios e relatos já publicados, sem botões de edição, exclusão ou de novo post à mostra. Um modal discreto de acesso (via cadeado ou rodapé) desbloqueia o painel de criação e rascunhos pessoais salvos no dispositivo.
+> 2. **Estúdio de Criação e Decoração Expandido (Toploaders & Photocards)**:
+>    - Efeito de **mangas holográficas (Holo Sleeves)** com reflexos de estrelas, corações e vidro quebrado;
+>    - Aplicação de **Decoden (creme decorativo estilo chantilly)** nas bordas;
+>    - Adesivos coreanos autênticos de fã (**Polco Deco**: fitas decoradas, laços, estrelas SKZOO e frases em hangul/alfabeto);
+>    - **Binder Digital estilo pasta de colecionador (grade 3x3)** para folhear photocards salvos;
+>    - **Download em imagem (.png)** do toploader customizado via Canvas nativo.
+> 3. **Paisagem Sonora Lo-Fi de Foco**: Sintetizador de ambiente evocando uma **Cafeteria aconchegante em Seul** com chuva suave nas janelas, ruído de fita cassete/vinil e acordes relaxantes em piano Rhodes via Web Audio API (sem dependências externas que falhem).
+> 4. **Personalização de Fotos em Todas as Entradas**: Upload e enquadramento de fotos em qualquer post (com washi tape customizável e legenda de campo).
 
 ---
 
-## 1. Visão Geral & Conceito
+## 1. Visão Geral e Conceito Central
 
-- **O que faz**: Oferece uma plataforma acolhedora e completa para Laryliissa publicar seus relatos de campo e reflexões sem depender de conhecimentos técnicos ou edição manual de arquivos HTML/código. Os leitores desfrutam de uma experiência de leitura editorial de revista zine com música de foco e toploaders.
-- **Público-alvo**: A própria autora (gerenciamento simplificado e autônomo) e leitores interessados em cultura pop asiática, neurodivergência na vida adulta e práticas de autocuidado.
-- **Proposta de Valor**: Autonomia editorial total com design profissional de alto impacto visual.
-
----
-
-## 2. Experiência do Usuário & Fluxo de Escrita Sem Código
-
-### Fluxo de Criação de Post pela Autora (Zero Código)
-1. A autora clica no botão visível **"+ Novo Escrito"** no topo da tela.
-2. Abre-se um painel visual limpo e acolhedor (sem termos técnicos):
-   - Digita o Título e o tempo estimado de leitura (ou cálculo automático).
-   - Clica no botão **"Carregar Imagem"** e seleciona qualquer foto do seu computador ou celular (formato JPG, PNG, WebP). O app processa a imagem localmente e já a mostra com a moldura de diário.
-   - Digita o texto normalmente na caixa de escrita.
-   - Se quiser destacar uma frase marcante (pull quote) ou uma fala divertida em caligrafia, clica nos botões dedicados.
-   - Clica em **"Publicar no Diário"**.
-3. O post aparece imediatamente no feed inicial e já ganha sua página de leitura dedicada completa.
+- **O que faz**: Transforma o *Além da Grade* em uma casa editorial viva para a pesquisadora insider. Permite que Lary registre suas anotações de campo, analise a cultura Hallyu e a vida adulta com total privacidade de rascunhos, enquanto proporciona aos leitores uma experiência imersiva de zine com áudio ambiente e um playground interativo de toploaders.
+- **Público**: Leitores interessados em Fan Studies, cultura de fãs, vida adulta e neurodivergência; e a própria autora (Lary), com ferramentas de escrita sob medida.
+- **Valor Principal**: Independência total (hospedagem estática gratuita no GitHub Pages), integridade editorial e estética afetiva sem códigos ou ferramentas externas complexas.
 
 ---
 
-## 3. Decisões de Produto & Arquitetura
+## 2. Experiência de Uso e Design Visual
 
-1. **Upload Local de Imagens via `FileReader` / Data URL**:
-   - As imagens selecionadas pelo explorador de arquivos do usuário são lidas instantaneamente como Data URLs (Base64) e salvas no banco de dados local do navegador (`localStorage`), garantindo que fotos pessoais funcionem sem a necessidade de contas de hospedagem de imagens externas.
-2. **Editor Visual com Blocos Prontos**:
-   - Criação de interface baseada em blocos fáceis de preencher (Parágrafo, Frase Destacada, Anotação à mão, Pergunta de Fechamento), dispensando a necessidade de tags HTML ou Markdown.
-3. **Persistência Segura**:
-   - Dados salvos automaticamente no navegador, com botão de exportar/importar cópia de segurança em arquivo JSON legível para que nunca haja perda de textos.
-4. **Reserva de Dados Originais**:
-   - Os 4 posts originais (incluindo o texto integral de *"O Gramado, o Salompas e o Stray Kids"*) já vêm pré-carregados e formatados com perfeição.
+### Fluxos Principais
+
+1. **Visão do Visitante (Pública)**:
+   - Acesso limpo ao feed de ensaios com leitura confortável (máx. 68ch, tipografia editorial humanista);
+   - Visualização da foto do festival Rock in Rio 2026 e das crônicas;
+   - Acesso ao Mural de Toploaders e ao Binder de Photocards para brincar e criar suas próprias decorações;
+   - Player Lo-Fi ambiente de cafeteria em Seul no canto inferior;
+   - Nenhum botão administrativo exposto.
+
+2. **Desbloqueio do Modo Autora**:
+   - Um ícone discreto no rodapé ou atalho abre o diálogo de PIN (senha de 4 a 6 dígitos definida pela autora);
+   - Uma vez autenticada, a barra superior exibe o distintivo dourado `Modo Autora Ativo`, revelando:
+     - Botão `+ Novo Escrito`;
+     - Botões de `Editar` e `Excluir` em cada card e dentro de cada artigo;
+     - Aba de `Rascunhos Privados` (visíveis exclusivamente no navegador da autora);
+     - Opção de publicar rascunhos para o feed público ou salvar backup JSON.
+
+3. **Estúdio de Decoração de Photocards (Decoden & Polco)**:
+   - Escolha do Photocard (upload de foto própria ou catálogo pré-definido);
+   - Escolha do Sleeve Protetor: Transparente clássico, Holo Estrelas, Holo Vidro ou Holo Coração;
+   - Aplicação de Decoden: Borda de chantilly nas cores lilás pastel, rosa chiclete, amarelo manteiga ou menta;
+   - Cartela de Adesivos Polco: Letras, laços, estrelas brilhantes, carinhas felizes e fitas washi;
+   - Ações: Salvar no Binder Virtual (9 bolsos) ou Baixar como Imagem PNG.
+
+4. **Trilha Sonora Lo-Fi de Cafeteria**:
+   - Controle de volume com faders independentes:
+     - Acordes quentes de piano Rhodes Lo-Fi (harmonia suave em loop generativo);
+     - Chuva suave na janela;
+     - Textura de vinil e xícaras de café ao fundo.
 
 ---
 
-## 4. Diagrama de Arquitetura do Sistema de Gestão Visual
+## 3. Decisões de Produto & Arquitetura de Dados
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        Barra de Ações do Autor                         │
-│   [+ Novo Escrito]     [✦ Decorar Toploader]     [♫ Modo Silencioso]   │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │ (Clique em Novo Escrito)
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                      Modal: Estúdio de Escrita Visual                  │
+│                        ALÉM DA GRADE APP                               │
+├────────────────────────────────────────────────────────────────────────┤
 │                                                                        │
-│ 1. TÍTULO: [ Digite o título do seu relato...                        ] │
-│ 2. TERRITÓRIO: (•) Espaços & Corpos  ( ) Mesa de Criação               │
-│                ( ) Filtros & Limites ( ) Aprendizagens                 │
-│ 3. FOTO DE CAPA:                                                       │
-│    [ 📁 Escolher Foto do Computador ] ou [ Selecionar Foto Temática ]  │
-│    ┌────────────────────────────────────────┐                          │
-│    │  [Preview com Washi Tape Verde Ácido]  │                          │
-│    └────────────────────────────────────────┘                          │
-│ 4. TEXTO PRINCIPAL:                                                    │
-│    [ Digite seus parágrafos aqui como no Word ou Bloco de Notas...   ] │
-│ 5. BOTÕES DE DESTAQUE:                                                 │
-│    [+ Frase Grande em Lilás]   [+ Citação em Rosa]  [+ Frase à Mão]    │
-│ 6. NOTA DE CAMPO (Pergunta final):                                     │
-│    [ Digite a provocação ou reflexão que encerra o texto...          ] │
+│   [Header: Logo + Navegação + Player Lo-Fi + Acesso Autora (PIN)]      │
 │                                                                        │
-│         [ Cancelar ]                     [ ✦ Publicar no Diário ]      │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                         Feed e Página do Post                          │
-│   - Post salvo instantaneamente no diário                              │
-│   - Botões de [Editar] e [Excluir] disponíveis para a autora           │
+│   ┌────────────────────────────────┐  ┌────────────────────────────┐   │
+│   │       VISÃO PRINCIPAL          │  │     PAINÉIS AUXILIARES     │   │
+│   │                                │  │                            │   │
+│   │ • Feed de Crônicas & Campo     │  │ • Estúdio Polco/Decoden    │   │
+│   │ • Leitor Fiel com Washi Tape   │  │ • Binder 9 Bolsos          │   │
+│   │ • Rascunhos Privados (Autora)  │  │ • Manifesto "Comece Aqui"  │   │
+│   │ • Editor de Posts Completo     │  │ • Lo-Fi Café Sound Engine  │   │
+│   └────────────────────────────────┘  └────────────────────────────┘   │
+│                                                                        │
+│   ┌────────────────────────────────────────────────────────────────┐   │
+│   │                    ESTADO LOCAL & PERSISTÊNCIA                 │   │
+│   │  • usePostsStore (Posts Públicos + Rascunhos Privados)         │   │
+│   │  • useAuthorAuth (Sessão por PIN encriptado localmente)        │   │
+│   │  • useToploaderStore (Binder com photocards salvos)            │   │
+│   │  • Web Audio API LoFiEngine (Sintetizador generativo em tempo  │   │
+│   │    real, zero latência, sem risco de direitos autorais)        │   │
+│   └────────────────────────────────────────────────────────────────┘   │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Decisões Técnicas
+
+- **Persistência Sem Backend**: Como o projeto foi preparado para o **GitHub Pages** (site estático), todo o controle de autenticação e rascunhos opera via armazenamento local seguro com chave derivada (`sessionStorage` e `localStorage`). Isso garante que a autora possa redigir em qualquer lugar sem que leitores vejam seus rascunhos.
+- **Geração de Imagem dos Toploaders**: Implementada via Canvas 2D nativo do navegador, renderizando a foto, o sleeve holográfico, o decoden e os adesivos em escala 2x para download nítido sem requisições a servidores externos.
+- **Música Lo-Fi de Cafeteria**: Motor de síntese de áudio construído diretamente com a Web Audio API nativa (osciladores com filtro passa-baixa, ruído rosa modelado para chuva, ruído impulsivo para o estalo de vinil e progressão harmônica relaxante I-vi-ii-V em teclado Rhodes sintetizado). Zero peso no bundle e sem problemas de direitos autorais ou links quebrados de streaming.
+
 ---
 
-## 5. Próximos Passos de Execução
-Após a sua aprovação deste plano revisado:
-1. Configurar fontes e estilização em `index.html` e `src/index.css`.
-2. Estruturar os dados pré-carregados em `src/data/postsData.ts` com o ensaio completo do Stray Kids e os posts do diário.
-3. Criar a camada de gerenciamento local `usePostsStore.ts` com suporte a upload de fotos do dispositivo e salvamento automático.
-4. Implementar o painel visual simplificado de escrita `PostEditorModal.tsx` com upload de arquivos e formatação com 1 clique.
-5. Construir a página dedicada de leitura `DedicatedPostView.tsx` com o design fiel, washi tape, pull quotes e navegação.
-6. Construir o decorador interativo de toploaders `ToploaderBoardModal.tsx`.
-7. Construir o player de áudio ambiente `AmbientSoundPlayer.tsx`.
-8. Integrar tudo na tela inicial `App.tsx` com busca instantânea e manifesto deslizante.
-9. Compilar e validar a aplicação completa.
+## 4. Plano de Implementação em Etapas
+
+1. **Correção de Pequenos Ajustes e Resiliência**:
+   - Refinamento do leitor de posts para suporte a fotos customizadas com tags washi tape e créditos de imagem;
+   - Eliminação de qualquer aviso de build e garantia de integridade com o GitHub Actions.
+2. **Sistema de Modo Autora & Gestão de Rascunhos**:
+   - Criação de `useAuthorAuth` com modal de PIN (PIN padrão inicial configurável pela autora, com recuperação rápida);
+   - Divisão de posts em `Publicados` e `Rascunhos Privados`;
+   - Ocultação inteligente de botões de edição/exclusão/novo relato quando o Modo Autora estiver desativado.
+3. **Novo Estúdio de Toploaders & Binder Digital de 9 Bolsos**:
+   - Criação de interface com mangas holográficas (Holo glitter, shattered glass, hearts);
+   - Decoden cremoso e cartelas de adesivos Polco coreanos;
+   - Exportação da arte em arquivo `.png` com botão de download;
+   - Galeria/Binder de 9 bolsos para colecionar criações.
+4. **Soundscape Lo-Fi Café em Seul & Chuva Suave**:
+   - Expansão do player no rodapé com botão de tocar Lo-Fi e mix de chuva/cafeteria/vinil;
+   - Modo silencioso com memória do último estado.
+5. **Verificação & Testes**:
+   - Compilação limpa com `compile_applet` e validação no navegador.

@@ -25,9 +25,11 @@ export interface PostItem {
   readTime: string;
   author: string;
   coverImage: string;
+  customCaption?: string;
   fieldNoteQuestion: string;
   blocks: PostBlock[];
   isFeatured?: boolean;
+  isDraft?: boolean;
   createdAt: number;
 }
 
@@ -45,7 +47,7 @@ export const INITIAL_POSTS: PostItem[] = [
     date: '30 Set 2026',
     readTime: '5 min de leitura',
     author: 'Laryliissa',
-    coverImage: 'stray-kids-festival.jpeg',
+    coverImage: 'WhatsApp Image 2026-09-27 at 12.13.14.jpeg',
     fieldNoteQuestion:
       'Até que ponto o sacrifício físico ainda é usado como régua para medir o amor de um fã?',
     isFeatured: true,

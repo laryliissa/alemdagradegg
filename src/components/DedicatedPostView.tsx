@@ -13,6 +13,7 @@ import {
   Check,
 } from 'lucide-react';
 import { PostItem } from '../data/postsData.ts';
+import { FestivalPhotoCard } from './FestivalPhotoCard.tsx';
 
 interface DedicatedPostViewProps {
   post: PostItem;
@@ -20,6 +21,7 @@ interface DedicatedPostViewProps {
   onBack: () => void;
   onEditPost: (post: PostItem) => void;
   onNavigatePost: (postId: string) => void;
+  isAuthorMode?: boolean;
 }
 
 export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
@@ -28,6 +30,7 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
   onBack,
   onEditPost,
   onNavigatePost,
+  isAuthorMode = false,
 }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -82,13 +85,15 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
           </button>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => onEditPost(post)}
-              className="mono-font text-[11px] font-bold uppercase flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-[var(--ink)] rounded-full hover:bg-[var(--k-acid)] transition-all shadow-[2px_2px_0_var(--ink)]"
-              title="Editar este relato diretamente"
-            >
-              <Edit3 className="w-3.5 h-3.5" /> Editar Post
-            </button>
+            {isAuthorMode && (
+              <button
+                onClick={() => onEditPost(post)}
+                className="mono-font text-[11px] font-bold uppercase flex items-center gap-1.5 px-3 py-1.5 bg-[var(--k-acid)] text-[var(--ink)] border-2 border-[var(--ink)] rounded-full hover:bg-[var(--k-pink)] hover:text-white transition-all shadow-[2px_2px_0_var(--ink)]"
+                title="Editar este relato (Modo Autora)"
+              >
+                <Edit3 className="w-3.5 h-3.5" /> Editar Post
+              </button>
+            )}
             <button
               onClick={handleShare}
               className="mono-font text-[11px] font-bold uppercase flex items-center gap-1.5 px-3 py-1.5 bg-white border-2 border-[var(--ink)] rounded-full hover:bg-[var(--k-cyan)] transition-all shadow-[2px_2px_0_var(--ink)]"
@@ -105,6 +110,11 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
           {/* Cabeçalho do Post */}
           <header className="mb-8 text-center flex flex-col items-center">
             <div className="flex items-center gap-2.5 mb-6 flex-wrap justify-center">
+              {post.isDraft && (
+                <span className="mono-font text-[10px] font-bold uppercase bg-[var(--k-pink)] text-white px-3 py-1 border-2 border-[var(--ink)] rounded-full shadow-[2px_2px_0_var(--ink)]">
+                  🔒 Rascunho Privado
+                </span>
+              )}
               <span className="mono-font text-[11px] font-bold uppercase bg-[var(--k-cyan)] text-[var(--ink)] px-3.5 py-1 border-2 border-[var(--ink)] rounded-full shadow-[2px_2px_0_var(--ink)]">
                 {post.territory}
               </span>
@@ -140,19 +150,16 @@ export const DedicatedPostView: React.FC<DedicatedPostViewProps> = ({
 
           {/* Imagem de Destaque com Fita Adesiva (Washi Tape) */}
           <div className="washi-tape-img">
-            {imgError ? (
-              <div className="w-full h-80 sm:h-96 rounded-xl border-2 border-[var(--ink)] bg-gradient-to-br from-[#f0e6ff] via-[#faf8ff] to-[#ffe6f2] flex flex-col items-center justify-center p-6 text-center shadow-[4px_4px_0_var(--ink)]">
-                <Sparkles className="w-12 h-12 text-[var(--k-lilac)] mb-3 animate-pulse" />
-                <h3 className="display-font text-xl font-bold text-[var(--ink)] mb-1">{post.title}</h3>
-                <p className="mono-font text-xs text-neutral-500">{post.territory} · Além da Grade</p>
-              </div>
-            ) : (
-              <img
-                src={post.coverImage}
-                alt={post.title}
-                onError={() => setImgError(true)}
-                className="w-full max-h-[460px] object-cover img-border shadow-[4px_4px_0_var(--ink)] bg-neutral-100"
-              />
+            <FestivalPhotoCard
+              src={post.coverImage}
+              alt={post.title}
+              isDetailedView={true}
+              className="w-full img-border shadow-[4px_4px_0_var(--ink)]"
+            />
+            {post.customCaption && (
+              <p className="mono-font text-xs text-center text-neutral-500 mt-2.5 italic">
+                {post.customCaption}
+              </p>
             )}
           </div>
 

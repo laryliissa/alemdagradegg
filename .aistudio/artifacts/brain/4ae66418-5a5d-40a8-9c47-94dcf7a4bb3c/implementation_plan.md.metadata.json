@@ -1,6 +1,6 @@
 {
-  "summary":  "Plano de implementação revisado com foco em usabilidade para usuária não técnica: formulário visual intuitivo de postagem, upload direto de fotos do computador/celular (sem mexer em código), galeria de imagens prontas, formatação automática e botões de edição rápida na interface.",
-  "updatedAt":  "2026-10-02T13:13:21.868753792Z",
+  "summary":  "Plano de implementação completo para o Além da Grade:\n1. Modo Autora com PIN de Segurança para criação privada de posts e rascunhos.\n2. Estúdio Aprimorado de Photocards & Toploaders (Decoden, sleeves holográficas, Polco deco, download de toploader como imagem e visualização em binder de 9 bolsos).\n3. Soundscape Lo-Fi Café em Seul & Chuva Suave com Web Audio API.\n4. Suporte aprimorado para customização de fotos com washi tape e stickers.",
+  "updatedAt":  "2026-10-02T14:26:45.002855824Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

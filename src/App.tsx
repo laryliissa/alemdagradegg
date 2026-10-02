@@ -23,14 +23,22 @@ import {
   Heart,
   Menu,
   X,
+  Lock,
+  Unlock,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { usePostsStore } from './data/usePostsStore.ts';
 import { PostItem, Territory } from './data/postsData.ts';
+import { useAuthorAuth } from './data/useAuthorAuth.ts';
 import { DedicatedPostView } from './components/DedicatedPostView.tsx';
 import { PostEditorModal } from './components/PostEditorModal.tsx';
 import { ToploaderBoardModal } from './components/ToploaderBoardModal.tsx';
 import { ManifestoDrawerModal } from './components/ManifestoDrawerModal.tsx';
 import { AmbientSoundPlayer } from './components/AmbientSoundPlayer.tsx';
+import { AuthorAuthModal } from './components/AuthorAuthModal.tsx';
+import { Logo } from './components/Logo.tsx';
+import { FestivalPhotoCard } from './components/FestivalPhotoCard.tsx';
 
 export default function App() {
   const {
@@ -38,10 +46,15 @@ export default function App() {
     addPost,
     updatePost,
     deletePost,
+    toggleDraft,
     resetDefaults,
     exportBackup,
     importBackup,
   } = usePostsStore();
+
+  const { isAuthenticated, login, logout, updatePin, defaultPinHint } = useAuthorAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authorViewFilter, setAuthorViewFilter] = useState<'all' | 'published' | 'drafts'>('all');
 
   // Estados de Navegação e Filtros
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
@@ -139,9 +152,18 @@ export default function App() {
     return counts;
   }, [posts]);
 
-  // Filtragem de posts no feed
+  // Filtragem de posts no feed (com proteção total para rascunhos da autora)
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
+      // Visitantes comuns NUNCA veem rascunhos
+      if (!isAuthenticated && post.isDraft) return false;
+
+      // Autora pode alternar visualização
+      if (isAuthenticated) {
+        if (authorViewFilter === 'published' && post.isDraft) return false;
+        if (authorViewFilter === 'drafts' && !post.isDraft) return false;
+      }
+
       const matchTerritory =
         selectedTerritory === 'Todos' || post.territory === selectedTerritory;
       const q = searchQuery.toLowerCase().trim();
@@ -159,18 +181,22 @@ export default function App() {
           ));
       return matchTerritory && matchSearch;
     });
-  }, [posts, selectedTerritory, searchQuery]);
+  }, [posts, selectedTerritory, searchQuery, isAuthenticated, authorViewFilter]);
 
   // Post atualmente visualizado na página dedicada
   const activePost = useMemo(() => {
     if (!selectedPostId) return null;
-    return posts.find((p) => p.id === selectedPostId) || null;
-  }, [posts, selectedPostId]);
+    const found = posts.find((p) => p.id === selectedPostId);
+    if (!found) return null;
+    if (!isAuthenticated && found.isDraft) return null;
+    return found;
+  }, [posts, selectedPostId, isAuthenticated]);
 
-  // Post destacado no topo do feed (o primeiro ou o marcado como destaque)
+  // Post destacado no topo do feed (o primeiro público ou o marcado como destaque)
   const featuredPost = useMemo(() => {
-    return posts.find((p) => p.isFeatured) || posts[0] || null;
-  }, [posts]);
+    const pool = isAuthenticated ? posts : posts.filter((p) => !p.isDraft);
+    return pool.find((p) => p.isFeatured) || pool[0] || null;
+  }, [posts, isAuthenticated]);
 
   return (
     <div className="w-full min-h-screen flex flex-col relative text-[var(--ink)]">
@@ -183,12 +209,10 @@ export default function App() {
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             <button
               onClick={backToFeed}
-              className="no-underline flex items-center gap-2 group text-left"
+              className="no-underline flex items-center gap-2 group text-left p-0.5 rounded-lg focus:outline-none"
               title="Voltar para a página inicial"
             >
-              <div className="h-10 px-3.5 bg-[var(--k-acid)] border-2 border-[var(--ink)] flex items-center justify-center font-bold display-font text-base sm:text-lg shadow-[2px_2px_0_var(--ink)] group-hover:scale-105 transition-transform">
-                Além da Grade
-              </div>
+              <Logo size="md" />
             </button>
 
             <button
@@ -240,19 +264,35 @@ export default function App() {
             </button>
           </nav>
 
-          {/* Ações Rápidas da Autora (Novo Escrito) */}
+          {/* Ações: Modo Autora + Novo Escrito se autenticada */}
           <div className="flex items-center gap-2">
+            {isAuthenticated && (
+              <button
+                onClick={() => {
+                  setPostToEdit(null);
+                  setIsEditorOpen(true);
+                }}
+                className="mono-font text-xs font-bold uppercase bg-[var(--k-acid)] text-[var(--ink)] px-3 sm:px-4 py-2 rounded-full border-2 border-[var(--ink)] hover:bg-yellow-300 transition-all shadow-[2px_2px_0_var(--ink)] hover:-translate-y-0.5 flex items-center gap-1.5"
+                title="Escrever novo relato"
+              >
+                <Plus className="w-4 h-4 stroke-[3]" />
+                <span className="hidden sm:inline">Novo Escrito</span>
+              </button>
+            )}
+
             <button
-              onClick={() => {
-                setPostToEdit(null);
-                setIsEditorOpen(true);
-              }}
-              className="mono-font text-xs font-bold uppercase bg-[var(--k-pink)] text-white px-3 sm:px-4 py-2 rounded-full border-2 border-[var(--ink)] hover:bg-[var(--k-lilac)] transition-all shadow-[3px_3px_0_var(--ink)] hover:-translate-y-0.5 flex items-center gap-1.5"
-              title="Escrever e publicar um novo relato no diário (fácil, sem código)"
+              onClick={() => setIsAuthModalOpen(true)}
+              className={`mono-font text-[11px] font-bold uppercase px-3 py-2 rounded-full border-2 border-[var(--ink)] transition-all shadow-[2px_2px_0_var(--ink)] flex items-center gap-1.5 ${
+                isAuthenticated
+                  ? 'bg-emerald-400 text-[var(--ink)] font-bold'
+                  : 'bg-white text-neutral-600 hover:bg-neutral-100'
+              }`}
+              title={isAuthenticated ? 'Modo Autora Ativo (Gerenciar)' : 'Acesso da Autora (PIN)'}
             >
-              <Plus className="w-4 h-4 stroke-[3]" />
-              <span className="hidden sm:inline">Novo Escrito</span>
-              <span className="sm:hidden">Post</span>
+              {isAuthenticated ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+              <span className="hidden md:inline">
+                {isAuthenticated ? 'Modo Autora' : 'Autora'}
+              </span>
             </button>
 
             {/* Menu Mobile */}
@@ -265,6 +305,90 @@ export default function App() {
             </button>
           </div>
         </div>
+
+        {/* Faixa do Modo Autora (visível apenas para a Autora logada com PIN) */}
+        {isAuthenticated && (
+          <div className="bg-[var(--k-acid)] border-t border-b-2 border-[var(--ink)] px-4 py-2">
+            <div className="max-w-6xl mx-auto flex items-center justify-between text-xs flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <span className="font-bold display-font text-[var(--ink)] flex items-center gap-1">
+                  👑 Modo Autora Ativo
+                </span>
+                <span className="mono-font text-[10px] bg-white border border-[var(--ink)] px-2 py-0.5 rounded-full font-bold">
+                  {posts.filter((p) => p.isDraft).length} rascunho(s)
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 bg-white border border-[var(--ink)] rounded-lg p-0.5 shadow-xs">
+                <button
+                  onClick={() => setAuthorViewFilter('all')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    authorViewFilter === 'all'
+                      ? 'bg-[var(--ink)] text-white'
+                      : 'text-neutral-700 hover:bg-neutral-100'
+                  }`}
+                >
+                  Todos ({posts.length})
+                </button>
+                <button
+                  onClick={() => setAuthorViewFilter('published')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    authorViewFilter === 'published'
+                      ? 'bg-emerald-600 text-white'
+                      : 'text-neutral-700 hover:bg-neutral-100'
+                  }`}
+                >
+                  Publicados ({posts.filter((p) => !p.isDraft).length})
+                </button>
+                <button
+                  onClick={() => setAuthorViewFilter('drafts')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    authorViewFilter === 'drafts'
+                      ? 'bg-[var(--k-pink)] text-white'
+                      : 'text-neutral-700 hover:bg-neutral-100'
+                  }`}
+                >
+                  Rascunhos ({posts.filter((p) => p.isDraft).length})
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <button
+                  onClick={() => {
+                    setPostToEdit(null);
+                    setIsEditorOpen(true);
+                  }}
+                  className="font-bold underline text-[var(--ink)] hover:text-[var(--k-pink)] flex items-center gap-1"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Escrever
+                </button>
+                <span className="text-neutral-400">·</span>
+                <button
+                  onClick={exportBackup}
+                  className="text-neutral-700 hover:text-[var(--ink)] flex items-center gap-1 font-semibold"
+                  title="Baixar backup em arquivo JSON"
+                >
+                  <Download className="w-3 h-3" /> Backup
+                </button>
+                <span className="text-neutral-400">·</span>
+                <button
+                  onClick={() => setIsAuthModalOpen(true)}
+                  className="text-neutral-700 hover:text-[var(--ink)] font-semibold"
+                  title="Alterar PIN"
+                >
+                  PIN
+                </button>
+                <span className="text-neutral-400">·</span>
+                <button
+                  onClick={logout}
+                  className="text-red-700 hover:underline font-bold"
+                >
+                  Sair
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Drawer Mobile */}
         {mobileMenuOpen && (
@@ -299,14 +423,26 @@ export default function App() {
             </button>
             <button
               onClick={() => {
-                setPostToEdit(null);
-                setIsEditorOpen(true);
+                setIsAuthModalOpen(true);
                 setMobileMenuOpen(false);
               }}
-              className="text-left font-bold text-sm py-2 px-3 bg-[var(--k-acid)] text-[var(--ink)] border-2 border-[var(--ink)] rounded-lg flex items-center gap-2"
+              className="text-left font-bold text-sm py-2 px-3 hover:bg-[var(--bg-dots)] rounded-lg flex items-center gap-2"
             >
-              <Plus className="w-4 h-4" /> Escrever Novo Relato
+              <Lock className="w-4 h-4 text-neutral-500" />
+              <span>{isAuthenticated ? 'Gerenciar Modo Autora' : 'Acesso da Autora (PIN)'}</span>
             </button>
+            {isAuthenticated && (
+              <button
+                onClick={() => {
+                  setPostToEdit(null);
+                  setIsEditorOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="text-left font-bold text-sm py-2 px-3 bg-[var(--k-acid)] text-[var(--ink)] border-2 border-[var(--ink)] rounded-lg flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" /> Escrever Novo Relato
+              </button>
+            )}
           </div>
         )}
       </header>
@@ -324,6 +460,7 @@ export default function App() {
             const nextP = posts.find((p) => p.id === postId);
             if (nextP) openPost(nextP);
           }}
+          isAuthorMode={isAuthenticated}
         />
       ) : (
         <main className="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full">
@@ -337,14 +474,10 @@ export default function App() {
                 <article className="sticker-card p-5 sm:p-7 bg-white flex flex-col md:flex-row gap-6 items-center">
                   <div className="w-full md:w-1/2 flex items-center justify-center">
                     <div className="w-full relative washi-tape-img my-0">
-                      <img
+                      <FestivalPhotoCard
                         src={featuredPost.coverImage}
                         alt={featuredPost.title}
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            'https://images.unsplash.com/photo-1540039155732-d674140ca1d4?auto=format&fit=crop&q=80&w=800';
-                        }}
-                        className="img-border w-full h-56 sm:h-64 object-cover shadow-[4px_4px_0_var(--ink)]"
+                        className="img-border w-full h-56 sm:h-64 shadow-[4px_4px_0_var(--ink)]"
                       />
                     </div>
                   </div>
@@ -524,7 +657,7 @@ export default function App() {
                             )}
 
                             {/* Controles de Autor (Editar / Excluir) */}
-                            <div className="flex items-center gap-3 pt-1">
+                            <div className="flex items-center gap-3 pt-1 flex-wrap">
                               <span className="mono-font text-[10px] text-neutral-500 flex items-center gap-1">
                                 <Calendar className="w-3 h-3" /> {post.date}
                               </span>
@@ -532,21 +665,44 @@ export default function App() {
                               <span className="mono-font text-[10px] font-bold text-[var(--k-pink)]">
                                 {post.territory}
                               </span>
-                              <span>•</span>
-                              <button
-                                onClick={(e) => handleEditClick(post, e)}
-                                className="mono-font text-[10px] font-bold text-neutral-600 hover:text-[var(--ink)] flex items-center gap-1 underline underline-offset-2"
-                                title="Editar este texto"
-                              >
-                                <Edit2 className="w-3 h-3" /> Editar
-                              </button>
-                              <button
-                                onClick={(e) => handleDeleteClick(post.id, post.title, e)}
-                                className="mono-font text-[10px] font-bold text-neutral-400 hover:text-red-600 flex items-center gap-1"
-                                title="Excluir do diário"
-                              >
-                                <Trash2 className="w-3 h-3" />
-                              </button>
+                              {post.isDraft && (
+                                <>
+                                  <span>•</span>
+                                  <span className="mono-font text-[9px] font-bold uppercase bg-[var(--k-pink)] text-white px-2 py-0.5 rounded">
+                                    🔒 Rascunho
+                                  </span>
+                                </>
+                              )}
+                              {isAuthenticated && (
+                                <>
+                                  <span>•</span>
+                                  <button
+                                    onClick={(e) => handleEditClick(post, e)}
+                                    className="mono-font text-[10px] font-bold text-neutral-600 hover:text-[var(--ink)] flex items-center gap-1 underline underline-offset-2"
+                                    title="Editar este texto"
+                                  >
+                                    <Edit2 className="w-3 h-3" /> Editar
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleDraft(post.id);
+                                    }}
+                                    className="mono-font text-[10px] font-bold text-neutral-600 hover:text-[var(--ink)] flex items-center gap-1"
+                                    title="Alternar entre rascunho e público"
+                                  >
+                                    {post.isDraft ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                                    <span>{post.isDraft ? 'Publicar' : 'Ocultar'}</span>
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleDeleteClick(post.id, post.title, e)}
+                                    className="mono-font text-[10px] font-bold text-neutral-400 hover:text-red-600 flex items-center gap-1"
+                                    title="Excluir do diário"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
 
@@ -823,6 +979,13 @@ export default function App() {
             >
               <Mail className="w-4 h-4" /> Contato
             </a>
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="hover:text-[var(--k-pink)] transition-colors flex items-center gap-1 text-xs font-semibold text-neutral-400 hover:underline"
+              title="Acesso exclusivo para Lary (Autora)"
+            >
+              <Lock className="w-3.5 h-3.5" /> Área da Autora
+            </button>
           </div>
         </div>
       </footer>
@@ -864,7 +1027,18 @@ export default function App() {
         onClose={() => setIsManifestoOpen(false)}
       />
 
-      {/* 4. Dock de Som Ambiente (Web Audio API) */}
+      {/* 4. Modal de Autenticação do Modo Autora por PIN */}
+      <AuthorAuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        isAuthenticated={isAuthenticated}
+        onLogin={login}
+        onLogout={logout}
+        onUpdatePin={updatePin}
+        defaultPinHint={defaultPinHint}
+      />
+
+      {/* 5. Dock de Som Ambiente Lo-Fi (Web Audio API) */}
       <AmbientSoundPlayer />
     </div>
   );

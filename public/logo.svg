@@ -1,0 +1,74 @@
+<svg viewBox="0 0 400 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="barrierMesh" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="1.5" fill="#161124" fill-opacity="0.35" />
+    </pattern>
+    <linearGradient id="gradeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbb0ff" />
+      <stop offset="100%" stop-color="#9a62ff" />
+    </linearGradient>
+  </defs>
+
+  <!-- Raios de luz dos refletores -->
+  <path d="M 330 65 L 350 45" stroke="#d4ff00" stroke-width="5" stroke-linecap="round" />
+  <path d="M 345 80 L 370 70" stroke="#d4ff00" stroke-width="5" stroke-linecap="round" />
+  <path d="M 335 95 L 365 100" stroke="#d4ff00" stroke-width="5" stroke-linecap="round" />
+
+  <!-- Anel Orbital Lilás -->
+  <ellipse cx="200" cy="210" rx="180" ry="75" stroke="#b388ff" stroke-width="7" fill="none" stroke-dasharray="450 150" transform="rotate(-12 200 210)" />
+
+  <!-- A Grade de Show / Barricada com 3 Refletores -->
+  <g id="barricada" transform="rotate(-6 230 140)">
+    <path d="M 195 95 L 205 95 L 208 80 L 192 80 Z" fill="#161124" />
+    <rect x="190" y="74" width="20" height="7" rx="2" fill="#161124" />
+    <path d="M 245 88 L 255 88 L 258 73 L 242 73 Z" fill="#161124" />
+    <rect x="240" y="67" width="20" height="7" rx="2" fill="#161124" />
+    <path d="M 295 81 L 305 81 L 308 66 L 292 66 Z" fill="#161124" />
+    <rect x="290" y="60" width="20" height="7" rx="2" fill="#161124" />
+    <path d="M 160 100 L 330 80 C 335 80 340 85 340 92 L 345 190 L 155 205 Z" fill="#f0e6ff" stroke="#161124" stroke-width="6" />
+    <path d="M 165 105 L 325 86 C 330 86 335 90 335 95 L 340 185 L 160 198 Z" fill="url(#barrierMesh)" />
+    <line x1="205" y1="100" x2="208" y2="200" stroke="#161124" stroke-width="5" />
+    <line x1="250" y1="95" x2="253" y2="195" stroke="#161124" stroke-width="5" />
+    <line x1="295" y1="90" x2="298" y2="190" stroke="#161124" stroke-width="5" />
+  </g>
+
+  <!-- Estrelas de Brilho -->
+  <path d="M 75 140 Q 75 155 60 155 Q 75 155 75 170 Q 75 155 90 155 Q 75 155 75 140 Z" fill="#161124" />
+  <circle cx="65" cy="165" r="3" fill="#d4ff00" />
+  <path d="M 350 170 Q 350 190 330 190 Q 350 190 350 210 Q 350 190 370 190 Q 350 190 350 170 Z" fill="#b388ff" stroke="#ffffff" stroke-width="3" />
+  <circle cx="365" cy="215" r="3.5" fill="#d4ff00" />
+
+  <!-- Ticket de Festival -->
+  <g id="ticket" transform="rotate(-15 80 270)">
+    <rect x="45" y="255" width="75" height="42" rx="5" fill="#b388ff" stroke="#161124" stroke-width="5" />
+    <circle cx="45" cy="276" r="6" fill="#faf8ff" stroke="#161124" stroke-width="4" />
+    <circle cx="120" cy="276" r="6" fill="#faf8ff" stroke="#161124" stroke-width="4" />
+    <path d="M 72 270 Q 72 276 66 276 Q 72 276 72 282 Q 72 276 78 276 Q 72 276 72 270 Z" fill="#161124" />
+    <line x1="88" y1="265" x2="88" y2="287" stroke="#161124" stroke-width="2.5" stroke-dasharray="3 2" />
+    <line x1="95" y1="265" x2="95" y2="287" stroke="#161124" stroke-width="2" />
+    <line x1="100" y1="265" x2="100" y2="287" stroke="#161124" stroke-width="3" />
+  </g>
+
+  <!-- Traço Verde Ácido -->
+  <path d="M 175 305 Q 260 290 300 280" stroke="#d4ff00" stroke-width="10" stroke-linecap="round" />
+
+  <!-- Texto "Além da" -->
+  <g id="texto-alem-da" transform="rotate(-7 180 180)">
+    <text x="55" y="180" font-family="'Space Grotesk', Impact, sans-serif" font-weight="900" font-size="66" letter-spacing="-2" stroke="#ffffff" stroke-width="18" stroke-linejoin="round" fill="#161124">Além da</text>
+    <text x="55" y="180" font-family="'Space Grotesk', Impact, sans-serif" font-weight="900" font-size="66" letter-spacing="-2" stroke="#161124" stroke-width="7" stroke-linejoin="round" fill="#161124">Além da</text>
+    <path d="M 82 148 Q 82 153 77 153 Q 82 153 82 158 Q 82 153 87 153 Q 82 153 82 148 Z" fill="#ffffff" />
+  </g>
+
+  <!-- Texto "Grade" -->
+  <g id="texto-grade" transform="rotate(-8 230 250)">
+    <text x="95" y="275" font-family="'Caveat', cursive, sans-serif" font-weight="900" font-size="135" stroke="#ffffff" stroke-width="24" stroke-linejoin="round" fill="#161124">Grade</text>
+    <text x="98" y="278" font-family="'Caveat', cursive, sans-serif" font-weight="900" font-size="135" stroke="#161124" stroke-width="16" stroke-linejoin="round" fill="#161124">Grade</text>
+    <text x="95" y="275" font-family="'Caveat', cursive, sans-serif" font-weight="900" font-size="135" stroke="#161124" stroke-width="8" stroke-linejoin="round" fill="url(#gradeGradient)">Grade</text>
+  </g>
+
+  <!-- Coração Rosa -->
+  <g id="coracao" transform="rotate(12 350 260)">
+    <path d="M 350 250 C 350 242 342 236 334 236 C 324 236 318 245 318 253 C 318 266 332 278 334 280 C 336 278 350 266 350 253 Z" stroke="#eb3f8f" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 330 286 L 336 286 M 333 283 L 333 289" stroke="#b388ff" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+</svg>
