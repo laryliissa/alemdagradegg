@@ -118,6 +118,15 @@ body {
   border: 2px solid var(--ink);
 }
 
+/* Sem barra de rolagem visível */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Estilo do Post Dedicado */
 .post-container {
   background-color: #ffffff;
@@ -198,14 +207,107 @@ body {
 .washi-tape-img::before {
   content: "";
   position: absolute;
-  top: -10px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%) rotate(-2deg);
-  width: 120px;
-  height: 25px;
+  width: 130px;
+  height: 26px;
   background-color: var(--k-acid);
   border: 1px solid var(--ink);
-  opacity: 0.92;
+  opacity: 0.94;
   z-index: 10;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 0px rgba(22, 17, 36, 0.3);
+}
+
+/* Washi Tape Utilitários e Variações de Cores */
+.washi-strip {
+  border: 1px solid var(--ink);
+  opacity: 0.94;
+  box-shadow: 2px 2px 0px rgba(22, 17, 36, 0.25);
+  z-index: 10;
+}
+
+.washi-acid {
+  background-color: var(--k-acid);
+}
+
+.washi-pink {
+  background-color: var(--k-pink);
+}
+
+.washi-lilac {
+  background-color: var(--k-lilac);
+}
+
+.washi-cyan {
+  background-color: var(--k-cyan);
+}
+
+/* Botões Sticker Neobrutalistas */
+.sticker-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0px var(--ink);
+  font-family: "Space Mono", monospace;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.sticker-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--k-pink);
+}
+
+.sticker-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--ink);
+}
+
+.sticker-btn-primary {
+  background-color: var(--k-lilac);
+  color: var(--ink);
+}
+
+.sticker-btn-primary:hover {
+  background-color: var(--k-pink);
+  color: #ffffff;
+  box-shadow: 6px 6px 0px var(--ink);
+}
+
+.sticker-btn-accent {
+  background-color: var(--k-acid);
+  color: var(--ink);
+}
+
+.sticker-btn-accent:hover {
+  background-color: var(--k-cyan);
+  box-shadow: 6px 6px 0px var(--ink);
+}
+
+.sticker-btn-pink {
+  background-color: var(--k-pink);
+  color: #ffffff;
+}
+
+.sticker-btn-pink:hover {
+  background-color: var(--k-lilac);
+  color: var(--ink);
+  box-shadow: 6px 6px 0px var(--k-acid);
+}
+
+.sticker-btn-secondary {
+  background-color: #ffffff;
+  color: var(--ink);
+}
+
+.sticker-btn-secondary:hover {
+  background-color: var(--bg-dots);
+  box-shadow: 6px 6px 0px var(--k-pink);
 }
