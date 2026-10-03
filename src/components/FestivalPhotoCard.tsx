@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Camera } from 'lucide-react';
 
 interface FestivalPhotoCardProps {
-  src: string;
-  alt: string;
+  src?: string;
+  alt?: string;
   className?: string;
   isDetailedView?: boolean;
 }
