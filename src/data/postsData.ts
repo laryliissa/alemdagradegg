@@ -132,10 +132,6 @@ export const INITIAL_POSTS: PostItem[] = [
           'Então saímos daquele lugar. Descansamos, tomamos Coca-Cola e deitamos no chão, risos.',
       },
       {
-        type: 'image',
-        content: '01.png',
-      },
-      {
         type: 'p',
         content:
           'Depois veio o Alok. E, cara, ele arrasou na setlist. Mais tarde, escolhemos esperar o show do Stray Kids mais próximo de uma das laterais, onde tínhamos um pouco mais de espaço.',
